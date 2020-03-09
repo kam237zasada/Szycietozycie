@@ -9,7 +9,7 @@ import Contact from './Contact';
 
 const App = () => {
     return (
-        <Router>
+        <Router basename={process.env.PUBLIC_URL}>
             <Switch>
                <Route path="/" exact component={LandingPage}/>
                <Route path="/o-mnie" exact component={AboutMe}/>
