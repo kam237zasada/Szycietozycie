@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/Szycietozycie/static/css/main.a25ed23a.chunk.css",
+    "main.js": "/Szycietozycie/static/js/main.7ac1a717.chunk.js",
+    "main.js.map": "/Szycietozycie/static/js/main.7ac1a717.chunk.js.map",
+    "runtime-main.js": "/Szycietozycie/static/js/runtime-main.cc8be783.js",
+    "runtime-main.js.map": "/Szycietozycie/static/js/runtime-main.cc8be783.js.map",
+    "static/js/2.5208a9e6.chunk.js": "/Szycietozycie/static/js/2.5208a9e6.chunk.js",
+    "static/js/2.5208a9e6.chunk.js.map": "/Szycietozycie/static/js/2.5208a9e6.chunk.js.map",
+    "index.html": "/Szycietozycie/index.html",
+    "precache-manifest.a65e5dc372cb3160cbdc645d220ce143.js": "/Szycietozycie/precache-manifest.a65e5dc372cb3160cbdc645d220ce143.js",
+    "service-worker.js": "/Szycietozycie/service-worker.js",
+    "static/css/main.a25ed23a.chunk.css.map": "/Szycietozycie/static/css/main.a25ed23a.chunk.css.map",
+    "static/js/2.5208a9e6.chunk.js.LICENSE.txt": "/Szycietozycie/static/js/2.5208a9e6.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/Szycietozycie/static/media/spodnie.b2ed24e3.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.cc8be783.js",
+    "static/js/2.5208a9e6.chunk.js",
+    "static/css/main.a25ed23a.chunk.css",
+    "static/js/main.7ac1a717.chunk.js"
+  ]
+}
