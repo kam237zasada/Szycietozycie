@@ -131,7 +131,7 @@ a:hover {
     padding: 50px 0px;
 }
 
-@media screen and (min-width: 786px) {
+@media screen and (min-width: 700px) {
 
 .price-list-container {
     display: flex;
@@ -141,7 +141,7 @@ a:hover {
     border-style: groove;
     border-radius: 20px;
     box-shadow: 10px 10px darkslategray;
-    width: 60%;
+    width: 80%;
     max-width: 1000px;
     height: 500px;
     background-image: url('../images/spodnie.jpg');
@@ -150,7 +150,7 @@ a:hover {
 }
 }
 
-@media screen and (max-width:785px) {
+@media screen and (max-width:699px) {
     .price-list-container {
         display: flex;
         flex-direction: column;
@@ -159,9 +159,11 @@ a:hover {
         border-style: groove;
         border-radius: 20px;
         box-shadow: 10px 10px darkslategray;
-        width: 60%;
+        width: 80%;
         max-width: 1000px;
         height: 500px;
+        background-color: white;
+        background-size: cover;
 }
 }
 
@@ -208,14 +210,39 @@ a:hover {
     .price-list-options:hover {
         color: black;
     }
+    .price-list-dropdown {
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+        animation-name: dropdown-list;
+        animation-duration: 1s;
+        animation-fill-mode: forwards;
+        animation-timing-function: ease-in-out;
+    }
+    .price-list-option {
+        background-color: var(--light-blue-color);
+        font-family: var(--font-basic);
+        border: none;
+        border-bottom: 1px solid black;
+        height: 25px;
+        border-radius: 10px;
+    }
+    .price-list-option:hover {
+        color: red;
+    }
+
+    @keyframes dropdown-list{
+        0%{transform: translateX(0);}
+        100%{transform: translateX(40);}
+    }
 }
 
 .landing-overall {
-    background-color: var(--background-color);
     display: flex;
     justify-content: center;
 }
 .landing-container {
+    background-color: var(--background-color);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -234,7 +261,6 @@ a:hover {
     grid-template-columns: 200px auto;
     grid-template-rows: 50px auto;
     max-width: 1000px;
-
 }
 
 .landing-item-header {
@@ -303,18 +329,94 @@ a:hover {
 
 .contact-container {
     display: flex;
-        flex-direction: column;
-        border: var(--frame);
-        border-style: groove;
-        border-radius: 20px;
-        box-shadow: 10px 10px darkslategray;
-        width: 60%;
-        max-width: 1000px;
-        height: 500px;
-        background-color: white;
+    flex-direction: column;
+    border: var(--frame);
+    border-style: groove;
+    border-radius: 20px;
+    box-shadow: 10px 10px darkslategray;
+    width: 80%;
+    max-width: 1000px;
+    background-color: white;
 }
 .contact-item {
     margin-left: 20px;
     margin-top: 10px;
 }
+
+.square-icon {
+    font-size: 0.5em;
+    padding-bottom: 2.5px;
+}
+
+.map {
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+@media screen and (max-width: 550px) {
+    .map {
+        width: 80%;
+        height: auto;
+    } 
+}
+
+
+.about-me-overall {
+    min-height: 90vh;
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    padding: 50px 0px;
+    font-family: var(--font-basic);
+    font-size: 20px;
+}
+
+.about-me-container {
+    display: flex;
+    flex-direction: column;
+    border: var(--frame);
+    border-style: groove;
+    border-radius: 20px;
+    box-shadow: 10px 10px darkslategray;
+    width: 80%;
+    max-width: 1000px;
+    background-color: white;    
+}
+
+@media screen and (min-width: 576px) {
+.about-me-item {
+    background-color: white;
+    display: grid;
+    grid-template-columns: 220px auto;
+    grid-template-rows: auto;
+    max-width: 1000px;
+}
+}
+
+@media screen and (max-width: 575px) {
+    .about-me-item {
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .about-me-image {
+        align-self:center;
+    }
+    }
+
+.about-me-image {
+    width: 200px;
+    height: auto;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 3px 3px silver;
+}
+
+.about-me-content {
+    padding: 10px;
+}
+
+
 

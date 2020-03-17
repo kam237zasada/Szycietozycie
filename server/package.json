@@ -1,0 +1,33 @@
+{
+  "name": "szycietozycie",
+  "version": "1.0.0",
+  "description": "Shop",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kam237zasada/Szycietozycie.git"
+  },
+  "author": "Kamil Zasada",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kam237zasada/Szycietozycie/issues"
+  },
+  "homepage": "https://github.com/kam237zasada/Szycietozycie#readme",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "joi": "^14.3.1",
+    "joi-objectid": "^3.0.1",
+    "mongoose": "^5.9.4",
+    "nodemon": "^2.0.2",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0"
+  }
+}
