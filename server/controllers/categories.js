@@ -6,9 +6,12 @@ getCategories = async (req, res) => {
 };
 
 getCategory = async (req, res) => {
-    const category = await Category.findById(req.params.id);
+    
+    let category = await Category.findOne({"ID": req.params.id});
 
-    if (!category) return res.status(404).send('Nie ma takiej kategorii.');
+    if(!category) return res.status(404).send('Nie ma takiej kategorii.');
+
+
     res.send(category);
 };
 
@@ -19,16 +22,23 @@ addCategory = async (req, res) => {
 
     const checkCategory = await Category.findOne({name: req.body.name});
     if(checkCategory) { return res.status(400).send("Kategoria o takiej nazwie już istnieje.")};
-    
+    let currentNumber;
+    let categories = await Category.find();
+    if (categories.length===0) { currentNumber = 1} else {
+    let lastElementIndex = categories.length -1;
+    currentNumber = categories[lastElementIndex].ID +1;
+    }
 
     const newCategory = new Category({
-        name: req.body.name
+        name: req.body.name,
+        ID: currentNumber
     });
     try { 
         await newCategory.save();
         res.send({
             message: "Nowa kategoria utworzona",
-            name: newCategory.name
+            name: newCategory.name,
+            ID: currentNumber
         });
     } catch (error) { res.status(400).send(error); }
 
@@ -42,7 +52,7 @@ updateCategory = async (req, res) => {
     const { error } = validateCategory(req.body);
     if(error) { return res.status(400).send(error.details[0].message)};
 
-    existCategory = await Category.findOne({name: req.body.name});
+    let existCategory = await Category.findOne({name: req.body.name});
     if (existCategory && existCategory._id != category._id) { return res.status(400).send("Kategoria o takiej nazwie już istnieje.")};
 
     category.set({

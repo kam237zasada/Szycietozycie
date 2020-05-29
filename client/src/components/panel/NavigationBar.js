@@ -42,11 +42,11 @@ class NavigationBar extends React.Component {
             <div className="panel-navigation-container">
                 <a href="/admin/home"><div className="panel-navigation-item" id="panel-home">Pulpit</div></a>
                 <div className="panel-navigation-item" id="sales" onMouseOver={this.onHover} onMouseLeave={this.onLeave}>
-                <a href="/admin/sprzedaz">Sprzedaż</a>
+                <a href="/admin/orders/all">Sprzedaż</a>
                 <div className="panel-hover" id="hover-sales" style={{display: "none"}}>
-                    <div className="panel-hover-item">Wszystkie zamówienia</div>
-                    <div className="panel-hover-item">Zamówienia otwarte</div>
-                    <div className="panel-hover-item">Zakończone</div>
+                    <div className="panel-hover-item"><a href="/admin/orders/all">Wszystkie zamówienia</a></div>
+                    <div className="panel-hover-item"><a href="/admin/orders/open">Zamówienia otwarte</a></div>
+                    <div className="panel-hover-item"><a href="/admin/orders/finalize">Zakończone</a></div>
                 </div></div>
                 <div className="panel-navigation-item" id="products" onMouseOver={this.onHover} onMouseLeave={this.onLeave}>
                 <a href="/admin/produkty">Produkty</a>
@@ -56,10 +56,13 @@ class NavigationBar extends React.Component {
                     <div className="panel-hover-item"><a href="/admin/kategorie">Kategorie</a></div>
                 </div></div>
                 <div className="panel-navigation-item" id="settings" onMouseOver={this.onHover} onMouseLeave={this.onLeave}>
-                <a href="/admin/ustawienia">Ustawienia</a>
+                <a href="/admin/konfiguracja">Konfiguracja</a>
                 <div className="panel-hover" id="hover-settings" style={{display: "none"}}>
-                    <div className="panel-hover-item">Ustawienia konta</div>
-                    <div className="panel-hover-item">Administracja</div>
+                    <div className="panel-hover-item"><a href="/admin/moje-konto">Edytuj dane</a></div>
+                    <div className="panel-hover-item"><a href="/admin/administratorzy">Administratorzy</a></div>
+                    <div className="panel-hover-item"><a href="/admin/dostawy">Dostawy</a></div>
+                    <div className="panel-hover-item"><a href="/admin/platnosci">Płatności</a></div>
+                    <div className="panel-hover-item"><a href="/admin/statusy">Statusy zamówień</a></div>
                 </div></div>
                 
             </div>

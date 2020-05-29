@@ -31,9 +31,15 @@ const Product = mongoose.model('Product', new mongoose.Schema({
         type: Number,
         required: true
     },
+    productImage: {
+        type: String
+    },
     dateAdded: {    
         type: Date,
         default: Date.now
+    },
+    ID: {
+        type: Number
     }
 }));
 
@@ -44,8 +50,10 @@ function validateProduct(product) {
         color: Joi.string().required(),
         description: Joi.string().min(3).max(1000).required(),
         productCode: Joi.string().required(),
-        price: Joi.number().min(1).required(),
-        numberInStock: Joi.number().min(0).required()
+        price: Joi.number().min(0.01).required(),
+        numberInStock: Joi.number().min(0).required(),
+        productImage: Joi.string(),
+        ID: Joi.number()
     };
     return Joi.validate(product, schema)
 }

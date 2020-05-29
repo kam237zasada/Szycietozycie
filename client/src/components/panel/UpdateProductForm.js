@@ -1,8 +1,10 @@
 import React from 'react';
 import { getProduct, getCategory, getCategories, updateProduct, deleteProduct } from '../../actions';
 import { connect } from 'react-redux';
-import { Option } from './NewProductForm';
 import { Redirect } from 'react-router-dom';
+import apis from '../../api/index';
+
+
 
 class UpdateProductForm extends React.Component {
     constructor(props) {
@@ -15,36 +17,46 @@ class UpdateProductForm extends React.Component {
             color: '',
             productCode:'',
             description: '',
+            file: null,
             numberInStock: '',
             price:'',
+            changedPrice: '',
+            error: '',
+            productImage: '',
+            loaded: false,
             isUpdated: false,
-            isDeleted: false
+            isDeleted: false,
+            categories: []
         }
     }
 
     componentDidMount = async () => {
         await this.props.getProduct(this.props.match.params.id);
+        await this.setState({categoryId: this.props.product.category._id});
+        await this.props.getCategory(this.props.product.category.ID);
+        await this.props.getCategories();
+        this.setState({categories: this.props.categories});
+        this.setState({loaded: true});
         this.setState({_id: this.props.product._id})
         this.setState({name:this.props.product.name})
-        this.setState({categoryId: this.props.product.category._id});
-        await this.props.getCategory(this.state.categoryId);
         this.setState({category: this.props.category.name})
         this.setState({color:this.props.product.color})
         this.setState({productCode:this.props.product.productCode})
         this.setState({description:this.props.product.description})
         this.setState({numberInStock:this.props.product.numberInStock})
         this.setState({price:this.props.product.price})
-        await this.props.getCategories();
+        this.setState({changedPrice: this.props.product.price});
+        this.setState({productImage:this.props.product.productImage})
 
     }
 
-     handleChange = event => {
+     handleChange = async event => {
         switch (event.target.name) {
             case 'name':
                this.setState({ name: event.target.value });
                 break;
             case 'category':
-                this.setState({ category: event.target.value });
+                await this.setState({ categoryId: event.target.value });
                 break;
             case 'color':
                 this.setState({ color: event.target.value });
@@ -59,14 +71,33 @@ class UpdateProductForm extends React.Component {
                 this.setState({ numberInStock: event.target.value });
                 break;
             case 'price':
-                this.setState({ price: event.target.value });
+                const price = event.target.value;
+                let newPrice = price.replace(",", ".");
+                await this.setState({ price: newPrice });
+                let changedPrice = this.state.price;
+                let priceLength = changedPrice.length;
+                if (priceLength > 0) {
+                if (changedPrice.charAt(changedPrice.length-1) == ".") { changedPrice = `${changedPrice}00`; }
+                this.setState({changedPrice: changedPrice});
+                }
+                break;
+            case 'productImage':
+                this.setState({file: event.target.files[0]});
+                this.setState({productImage: this.state.imagePreview});
                 break;
             default:
                 break;
         }
     };
-    getCategories() {
-        return this.props.categories.map( category => <Option category={category} key={category._id}/>)
+    getCategories = () => {
+
+        return this.props.categories.map(category => {
+            if(this.state.categoryId===category._id) {
+            return <option value={category._id} selected>{category.name}</option>} 
+            else {
+            return <option value={category._id}>{category.name}</option>
+        }}
+        )
     }
     handleDelete = async e => {
         e.preventDefault();
@@ -75,14 +106,42 @@ class UpdateProductForm extends React.Component {
     }
     handleUpdate = async e => {
         e.preventDefault();
-        const {_id, name, categoryId, color, description, productCode, numberInStock, price} = this.state;
-        await this.props.updateProduct(_id, name, categoryId, color, description, productCode, numberInStock, price);
+        try { const {_id, name, categoryId, color, description, productCode, numberInStock, changedPrice, productImage} = this.state;
+        await this.props.updateProduct(_id, name, categoryId, color, description, productCode, numberInStock, changedPrice, productImage);
         this.setState({isUpdated: true});
+        } catch (error) {
+            this.setState({error: error.response.data});
+        }
+    }
+    handleFileUpload = async e => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('productImage', this.state.file)
+        try {
+            const res = await apis.post('/product/uploads', formData, {
+                headers: {
+                    'Content-type': 'multipart/form-data'
+                }
+            });
+            const { filePath} = res.data;
+
+            this.setState({imagePreview: filePath})
+            this.setState({productImage: filePath});
+
+        } catch (err) {
+            if(err.response.status === 500) {
+                console.log('Pojawił się problem z serwerem')
+            }
+        }
     }
     
     render() {
-        const { name, category, categoryId, color, description, productCode, numberInStock, price } = this.state;
-
+        const { name, category, categoryId, color, description, productCode, numberInStock, price, productImage } = this.state;
+        
+        const loading = (
+            <div>...Wczytuję dane...</div>
+        )
+        
         const renderForm = (
             <div className="ui form">
                 <form id="editProduct">
@@ -102,7 +161,7 @@ class UpdateProductForm extends React.Component {
                         name="category" 
                         onChange={this.handleChange} 
                         required>
-                            <option value={categoryId}>{category}</option>
+                            {/* <option value={categoryId}>{category}</option> */}
                         {this.getCategories()}
                         </select>
                     </div>
@@ -154,11 +213,30 @@ class UpdateProductForm extends React.Component {
                         required></input>
                     </div>
                     </div>
+                    <form onSubmit={this.handleFileUpload}><div className="panel-form-container"><div className="panel-form-header">Zdjęcie:</div>
+                    <div className="field">
+                        <label>Zdjęcie</label>
+                        <img className="upload-image" src={productImage}/>
+                        <input
+                        type="file"
+                        name="productImage"
+                        onChange={this.handleChange}
+                        required></input>
+                    <button type="submit">Dodaj</button>
+                    </div>
+                    </div>
+                    </form>
+                    <label className="error-message">{this.state.error}</label>
                     <button className="panel-button" form="editProduct" onClick={this.handleUpdate}>Edytuj</button><button className="panel-button" onClick={this.handleDelete}>USUŃ</button>
                 </form>
             </div>
         )
-        return <div>{this.state.isUpdated || this.state.isDeleted ? <Redirect push to="/admin/produkty"/> : renderForm}</div>
+        const isLoading = (
+            <div>{this.state.loaded  ? renderForm : loading}</div>
+        )
+        return <div>
+            {this.state.isUpdated || this.state.isDeleted ? <Redirect push to="/admin/produkty"/> : isLoading}
+        </div>
 
     }
 }

@@ -92,3 +92,12 @@
 .panel-hover-item:hover {
     color: red;
 }
+
+.upload-image {
+    max-width: 200px;
+    max-height: 200px;
+}
+.error-message {
+    color: red;
+    font-size: 15px;
+}

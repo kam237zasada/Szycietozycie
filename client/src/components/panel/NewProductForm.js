@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addProduct, getCategories, checkId } from '../../actions';
+import { addProduct, getCategories, getNewCode } from '../../actions';
 import { Redirect } from 'react-router-dom';
+import apis from '../../api/index';
+
 
 export function Option ({category}) {
 
@@ -22,16 +24,25 @@ class NewProductForm extends React.Component {
             description: '',
             numberInStock: '',
             price:'',
+            file: null,
+            fileName: "Wybierz zdjęcie",
+            uploadedFile: {},
+            imagePreview: '',
+            productImage: '',
+            error: '',
             isAdded: false
         }
     }
 
     async componentDidMount() {
         await this.props.getCategories();
+        await this.props.getNewCode();
+        this.setState({productCode: this.props.code})
     }
     handleChange = event => {
         switch (event.target.name) {
             case 'name':
+                console.log(event.target.value)
                this.setState({ name: event.target.value });
                 break;
             case 'category':
@@ -50,7 +61,18 @@ class NewProductForm extends React.Component {
                 this.setState({ numberInStock: event.target.value });
                 break;
             case 'price':
-                this.setState({ price: event.target.value });
+                const price = event.target.value;
+                let newPrice = price.replace(",", ".");
+                let priceLength = newPrice.length;
+                if (priceLength > 0) {
+                if (newPrice.charAt(newPrice.length-1) == ".") { newPrice = `${newPrice}00`; }
+                }
+                console.log("po" + newPrice)
+                this.setState({ price: newPrice });
+                break;
+            case 'productImage':
+                this.setState({file: event.target.files[0]});
+                this.setState({productImage: this.state.imagePreview});
                 break;
             default:
                 break;
@@ -59,20 +81,46 @@ class NewProductForm extends React.Component {
 
     handleSubmit = async event => {
         event.preventDefault();
-        const {name, categoryId, color, description, productCode, numberInStock, price} = this.state;
-        await this.props.addProduct(name, categoryId, color, description, productCode, numberInStock, price);
+        try { 
+            const {name, categoryId, color, description, productCode, numberInStock, price, productImage} = this.state;
+        await this.props.addProduct(name, categoryId, color, description, productCode, numberInStock, price, productImage);
         this.setState({isAdded: true});
+        } catch (err) {
+            this.setState({error: err.response.data});
+        }
     }
+
+    handleFileUpload = async e => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('productImage', this.state.file)
+        try {
+            const res = await apis.post('/product/uploads', formData, {
+                headers: {
+                    'Content-type': 'multipart/form-data'
+                }
+            });
+            const { filePath} = res.data;
+
+            this.setState({imagePreview: filePath})
+            this.setState({productImage: filePath});
+
+        } catch (err) {
+            if(err.response.status === 500) {
+                console.log('Pojawił się problem z serwerem')
+            }
+        }
+    }
+    
 
     getCategories() {
         return this.props.categories.map( category => <Option category={category} key={category._id}/>)
     }
     render() {
-                   
  
         const renderForm = (
             <div className="ui form">
-                <form id="addProduct">
+                <form id="addProduct" enctype="multipart/form-data">
                     <label>Dodaj nowy produkt:</label>
                     <div className="panel-form-container"><div className="panel-form-header">Dane podstawowe:</div><div className="field">
                         <label>Nazwa</label>
@@ -107,6 +155,7 @@ class NewProductForm extends React.Component {
                         <input
                         type="text"
                         name="productCode"
+                        value={this.state.productCode}
                         onChange={this.handleChange}
                         required></input>
                     </div>
@@ -137,6 +186,21 @@ class NewProductForm extends React.Component {
                         required></input>
                     </div>
                     </div>
+                    <form onSubmit={this.handleFileUpload}><div className="panel-form-container"><div className="panel-form-header">Zdjęcie:</div>
+                    <div className="field">
+                        <label>Zdjęcie</label>
+                        <img className="upload-image" src={this.state.imagePreview}/>
+                        <input
+                        type="file"
+                        name="productImage"
+                        onChange={this.handleChange}></input>
+                    <label htmlFor="productImage">{this.state.fileName}{this.state.uploadedFile.filePath}</label>
+
+                    <button type="submit">Dodaj</button>
+                    </div>
+                    </div>
+                    </form>
+                    <label class="error-message">{this.state.error}</label>
                     <button className="panel-button" form="addProduct" onClick={this.handleSubmit}>Dodaj</button>
                 </form>
             </div>
@@ -147,11 +211,11 @@ class NewProductForm extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return { product: state.product, categories: state.categories };
+    return { product: state.product, categories: state.categories, code: state.code };
 
 };
 
 export default connect(
     mapStateToProps,
-    { addProduct, getCategories }
+    { addProduct, getCategories, getNewCode }
     )(NewProductForm);

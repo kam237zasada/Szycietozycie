@@ -96,6 +96,29 @@ a:hover {
     }
 }
 
+.shop-header-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    position: sticky;
+    top: 0px;
+    background-color: var(--light-blue-color);
+}
+
+.shop-header-item {
+    font-size: 30px;
+}
+
+.shop-header-profile {
+    display: flex;
+}
+
+.shop-header-item span {
+    font-size: 18px;
+    padding-right: 10px;
+    padding-top: 6px;
+}
+
 .footer-container {
     display: flex;
     justify-content: flex-start;
@@ -417,6 +440,401 @@ a:hover {
 .about-me-content {
     padding: 10px;
 }
+
+.shop-container {
+    min-height: 90vh;
+}
+
+.shop-dropdown-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 30%;
+    background-color: var(--light-blue-color);
+    position: absolute;
+    right: 0px;
+    font-size: 18px;
+    z-index: 1;
+}
+
+.shop-dropdown-item {
+    padding: 5px;
+}
+
+.customer-form {
+    background-color: var(--background-color);
+    min-height: 90vh;
+    display: flex;
+    justify-content: center;
+    padding: 50px 0px;
+    font-family: var(--font-basic);
+}
+
+.customer-form-container {
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    align-items: center;
+    border: var(--frame);
+    border-style: groove;
+    border-radius: 20px;
+    box-shadow: 10px 10px darkslategray;
+}
+
+.customer-form-header {
+    font-size: 25px;
+    padding: 5px;
+}
+
+.customer-form-field {
+    padding: 5px;
+}
+
+.customer-form-field>input {
+    border-radius: 5px 5px;
+    padding: 5px;
+    box-shadow: 2px 2px gray;
+    max-width: 300px;
+}
+
+.customer-form-field>label {
+    padding-right: 10px;
+    font-weight: bold;
+}
+
+.categories-list-container {
+    font-size: 25px;
+    margin: 10px;
+    width: 15vw;
+    
+}
+
+.categories-list-header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid gray;
+    font-size: 30px;
+}
+
+.categories-list-item {
+    padding: 5px;
+}
+
+.categories-list-item:hover {
+    position: relative;
+    left: 20px;
+}
+
+.shop-content {
+    display: flex;
+    justify-content: center;
+}
+
+.shop-items {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    justify-content: center;
+    width: 85vw;
+}
+
+.one-card {
+    padding: 15px;
+}
+
+.image {
+    height: 300px;
+}
+
+.card {
+    height: 400px;
+}
+
+.product-card {
+    border: 1px solid grey;
+    width: 310px;
+    height: 450px;
+    margin: 15px;
+}
+
+.place-image {
+    height: 300px;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+
+}
+
+.product-image {
+    height: 100%;
+    max-width: 300px;
+}
+
+.product-name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.product-price {
+    font-size: 18px;
+}
+
+.search-button {
+    background-color: lightcyan;
+    min-width: 20px;
+    max-width: 100px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-left: 2px;
+    position: relative;
+}
+
+.search-button i {
+    position: relative;
+    top: 5px;
+}
+
+.product-view-container {
+    display: flex;
+    flex-direction: column;
+    width: 85vw;
+    justify-content: flex-end;
+}
+.product-view-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.product-view-image {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+
+}
+
+.product-view-image img {
+    width: 80%;
+    height: fit-content;
+    min-width: 250px;
+
+}
+
+.product-view-species {
+     width: 40%;
+     display: flex;
+     flex-direction: column;
+     position: relative;
+     padding: 15px;
+}
+
+.product-view-description {
+    border-top: 1px solid gray;
+    padding: 15px;
+
+}
+
+.available {
+    color: green;
+}
+
+.unavailable {
+    color: red;
+}
+
+.product-view-species h2 {
+    padding: 10px;
+}
+.species-price {
+    font-size: 25px;
+    padding: 10px;
+}
+
+.species-shipment {
+    padding: 10px;
+    font-size: 17px;
+}
+
+.species-productCode {
+    padding: 10px;
+}
+
+.species-color {
+    padding: 10px;
+}
+
+.species-availability {
+    padding: 10px;
+    font-size: 18px;
+}
+.species-how-many {
+    padding: 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+.species-amount {
+    padding: 10px;
+    display: flex;
+}
+
+.button-amount {
+    height: 40px;
+    width: 30px;
+    border: none;
+}
+
+.input-amount {
+    width: 30px;
+    height: 40px;
+    text-align: center;
+}
+
+.plus {
+    height: 30px;
+    background-color: green;
+    border-radius: 50% 50%;
+    margin: 5px;
+    font-weight: bold;
+}
+
+.minus {
+    height: 30px;
+    background-color: red;
+    border-radius: 50% 50%;
+    margin: 5px;
+    font-weight: bold;
+}
+
+.delete-basket {
+    border: 2px solid black;
+    background-color: red;
+    font-weight: bold;
+    width: 25px;
+    height: 25px;
+    border-radius: 50% 50%;
+
+}
+
+.species-basket {
+    padding: 10px;
+}
+
+.button-basket {
+    width: 200px;
+    height: 40px;
+    background-color: #EC7729;
+    border-radius: 5px 5px;
+    color:lightgray;
+    border: none;
+}
+
+.button-basket:hover {
+    background-color: #B25D25;
+}
+
+.query-message {
+    width: 85vw;
+    text-align: center;
+    font-size: 18px;
+}
+
+.links{
+    text-align: left;
+}
+
+.basket-content {
+    width: 85vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.empty-basket {
+    width: 85vw;
+}
+
+.basket-header {
+    font-size: 20px;
+    margin: 15px;
+}
+
+.basket-summary {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+}
+
+.summary-content-span {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.basket-action {
+    display: flex;
+    justify-content: space-between;
+    margin: 50px;
+}
+
+.under-basket-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.shop-form-container {
+    margin: 10px;
+    padding: 10px;
+    width: 100%;
+}
+
+.shop-form-header {
+    font-size: 20px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.identities-container {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.empty-error {
+    display: none;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ff3333;
+}
+
+.summary-identities {
+    display: flex;
+    justify-content: space-between;
+    width: 75vw;
+    align-self: center;
+}
+
+.summary-identities-child {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+
+.summary-identities-child div {
+    margin-bottom: 5px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.under-basket-container div {
+    margin-top: 10px;
+}
+
+
+
+
+
 
 
 
