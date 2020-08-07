@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getAdmin, updateAdmin, updateAdminPassword } from '../../actions';
 import { Redirect } from 'react-router-dom';
+import { getCookie } from '../../js/index';
 
 class UpdateAdminForm extends React.Component {
     constructor(props) {
@@ -13,14 +14,24 @@ class UpdateAdminForm extends React.Component {
             currentPassword: '',
             password: '',
             confirmPassword: '',
+            adminPassword: '',
+            adminPasswordData: '',
             isUpdated: false,
-            message: ''
+            errorEdit: '',
+            errorPassword:''
         }
     }
 
     componentDidMount = async () => {
-        let id = localStorage.getItem('id');
-        await this.props.getAdmin(id);
+        let id;
+        if(this.props.match.params.id) {
+            id = this.props.match.params.id
+        } else {
+            id = getCookie('adminId');
+
+        }
+        const jwt = getCookie("jwt");
+        await this.props.getAdmin(id, jwt);
         this.setState({_id: this.props.admin._id})
         this.setState({name: this.props.admin.name})
         this.setState({email: this.props.admin.email})
@@ -35,8 +46,11 @@ class UpdateAdminForm extends React.Component {
             case 'email':
                this.setState({ email: event.target.value });
                 break;
-            case 'currentPassword':
-               this.setState({ currentPassword: event.target.value });
+            case 'adminPassword':
+               this.setState({ adminPassword: event.target.value });
+                break;
+            case 'adminPasswordData':
+               this.setState({ adminPasswordData: event.target.value });
                 break;
             case 'password':
                this.setState({ password: event.target.value });
@@ -52,17 +66,27 @@ class UpdateAdminForm extends React.Component {
 
     handleUpdate = async (e) => {
         e.preventDefault();
-        const {_id, name, email} = this.state;
-        await this.props.updateAdmin(_id, email, name);
+        try {
+        const {_id, name, email, adminPasswordData} = this.state;
+        const jwt = getCookie("jwt");
+        await this.props.updateAdmin(_id, email, name, adminPasswordData, jwt);
         this.setState({isUpdated: true});
+        } catch (err) {
+            this.setState({errorEdit: err.response.data});
+        }
     
     }
 
     handleUpdatePassword = async (e) => {
         e.preventDefault();
-        const {_id, currentPassword, password, confirmPassword} = this.state;
-        await this.props.updateAdminPassword(_id, currentPassword, password, confirmPassword);
+        const {_id, adminPassword, password, confirmPassword} = this.state;
+        try {
+            const jwt = getCookie("jwt");
+        await this.props.updateAdminPassword(_id, adminPassword, password, confirmPassword, jwt);
         this.setState({isUpdated: true});
+        } catch (err) {
+            this.setState({errorPassword: err.response.data});
+        }
     }
     render() {
                const { name, email } = this.state;    
@@ -89,7 +113,16 @@ class UpdateAdminForm extends React.Component {
                         onChange={this.handleChange}
                         required></input>
                     </div>
+                    <div className="field">
+                        <label>Podaj SWOJE hasło w celu autoryzacji</label>
+                        <input
+                        type="password"
+                        name="adminPasswordData"
+                        onChange={this.handleChange}
+                        required></input>
                     </div>
+                    </div>
+                    <label className="error-message">{this.state.errorEdit}</label>
                     <button className="panel-button" form="updateAdmin" onClick={this.handleUpdate}>Edytuj dane</button>
                 </form>
                 
@@ -97,10 +130,10 @@ class UpdateAdminForm extends React.Component {
                     <label>Edytuj hasło:</label>
                     <div className="panel-form-container"><div className="panel-form-header">Hasło:</div>
                     <div className="field">
-                        <label>Podaj obecne hasło</label>
+                        <label>Podaj SWOJE hasło w celu autoryzacji</label>
                         <input
                         type="password"
-                        name="currentPassword"
+                        name="adminPassword"
                         onChange={this.handleChange}
                         required></input>
                     </div>
@@ -121,11 +154,12 @@ class UpdateAdminForm extends React.Component {
                         required></input>
                     </div>
                     </div>
+                    <label className="error-message">{this.state.errorPassword}</label>
                     <button className="panel-button" form="updateAdminPassword" onClick={this.handleUpdatePassword}>Zmień hasło</button><div></div>
                 </form>
             </div>
         )
-        return <div>{this.state.isUpdated ? <Redirect push to="/admin/ustawienia"/> : renderForm}</div>
+        return <div>{this.state.isUpdated ? <Redirect push to="/admin/admins"/> : renderForm}</div>
 
     }
 }

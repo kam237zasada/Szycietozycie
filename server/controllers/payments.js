@@ -11,7 +11,6 @@ getPayment = async (req, res) => {
     let payment = await Payment.findOne({"ID": req.params.id});
 
     if(!payment) return res.status(404).send('Nie ma takiej metody płatności.');
-    console.log(payment)
 
     res.send(payment);
 };
@@ -41,7 +40,7 @@ addPayment = async (req, res) => {
             name: newPayment.name,
             ID: currentNumber
         });
-    } catch (error) { res.status(400).send(error); }
+    } catch (error) { res.status(500).send("Cos poszło nie tak"); }
 
 };
 
@@ -54,7 +53,7 @@ updatePayment = async (req, res) => {
     if(error) { return res.status(400).send(error.details[0].message)};
 
     let existPayment = await Payment.findOne({name: req.body.name});
-    if (existPayment && existPayment._id != payment._id) { return res.status(400).send("Metoda płatności o takiej nazwie już istnieje. Podaj inną.")};
+    if (existPayment && existPayment._id != req.params.id) { return res.status(400).send("Metoda płatności o takiej nazwie już istnieje. Podaj inną.")};
 
     payment.set({
         name: req.body.name,
@@ -67,7 +66,7 @@ updatePayment = async (req, res) => {
             ID: payment.ID,
             message: "Metoda płatności zaktualizowana"
         });
-    } catch (error) { return res.status(400).send(error); }
+    } catch (error) { return res.status(500).send("Cos poszło nie tak"); }
 };
 
 deletePayment = async (req, res) => {

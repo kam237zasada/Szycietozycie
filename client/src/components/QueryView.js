@@ -1,5 +1,6 @@
 import React from 'react';
 import ShopMenu from './ShopMenu';
+import NavigationLine from './NavigationLine';
 import {getProductsByQuery, getCategory} from '../actions';
 import { connect } from 'react-redux';
 import { changeView, changeString } from '../js/index';
@@ -10,7 +11,7 @@ function ProductItem({product}) {
     return (
         <div className="product-card">
             <div className="place-image">
-                <img className="product-image" src={product.productImage} alt={newString}/>
+                <img className="product-image" src={product.productImage[0]} alt={newString}/>
             </div>
             <div className="product-content">
             <a href={`/sklep/p/${newString}/${product.ID}`}className="product-name">{product.name}</a>
@@ -42,9 +43,8 @@ componentDidMount = async () => {
             <div>Niestety nie ma produktów dla wyszukiwania <span style={{fontWeight:"bold"}}>"{this.props.match.params.query}"</span> . Sprawdź jeszcze raz kryteria wyszukiwania.</div>
         )
         const showResults = (
-            <div className="shop-items"><div className="links" style={{textAlign: "left"}}><a href="/sklep">Strona główna</a></div>
-                <div className="query-message">Wyniki wyszukiwania dla zapytania <span style={{fontWeight: "bold"}}>"{this.props.match.params.query}"</span> :</div>
-                {this.state.empty ? noProducts : <ProductsTable products={this.props.products}/>}</div>
+                <><div className="query-message">Wyniki wyszukiwania dla zapytania <span style={{fontWeight: "bold"}}>"{this.props.match.params.query}"</span> :</div>
+                {this.state.empty ? noProducts : <ProductsTable products={this.props.products}/>}</>
         )
 
         const loading = ( <div>...Wczytuję dane...</div>
@@ -52,9 +52,7 @@ componentDidMount = async () => {
         )
 
         return(
-            <div className="shop-content"><ShopMenu/>
-            {this.state.loaded ? showResults : loading}
-            </div>
+            <>{this.state.loaded ? <div className="shop-content"><ShopMenu/><NavigationLine query={this.props.match.params.query}/><div className="shop-items">{showResults}</div></div> : loading}</>
         )
     }
 }

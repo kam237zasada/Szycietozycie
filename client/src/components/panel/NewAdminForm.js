@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addAdmin } from '../../actions';
 import { Redirect } from 'react-router-dom';
+import { getCookie } from '../../js/index';
 
 class NewAdminForm extends React.Component {
     constructor(props) {
@@ -12,7 +13,9 @@ class NewAdminForm extends React.Component {
             email: '',
             password: '',
             confirmPassword: '',
-            isAdded: false
+            adminPassword: '',
+            isAdded: false,
+            error: ''
        }
     }
 
@@ -30,6 +33,9 @@ class NewAdminForm extends React.Component {
             case 'confirmPassword':
                this.setState({ confirmPassword: event.target.value });
                 break;
+            case 'adminPassword':
+                this.setState({ adminPassword: event.target.value });
+                break;
             default:
                 break;
         }
@@ -38,9 +44,17 @@ class NewAdminForm extends React.Component {
 
     handleSubmit = async (e) => {
         e.preventDefault();
-        const {name, email, password, confirmPassword} = this.state;
-        await this.props.addAdmin(email, name, password, confirmPassword);
+        const jwt = getCookie("jwt");
+        try {
+            const {name, email, password, confirmPassword, adminPassword} = this.state;
+
+        await this.props.addAdmin(email, name, password, confirmPassword, adminPassword, jwt);
         this.setState({isAdded: true});
+        } catch (err) {
+            this.setState({error: err.response.data})
+            
+            
+        }
     
     }
 
@@ -67,7 +81,7 @@ class NewAdminForm extends React.Component {
                         required></input>
                     </div>
                     <div className="field">
-                        <label>Podaj hasło</label>
+                        <label>Podaj hasło dla nowego administraora</label>
                         <input
                         type="password"
                         name="password"
@@ -75,19 +89,28 @@ class NewAdminForm extends React.Component {
                         required></input>
                     </div>
                     <div className="field">
-                        <label>Powtórz hasło</label>
+                        <label>Powtórz hasło dla nowego administratora</label>
                         <input
                         type="password"
                         name="confirmPassword"
                         onChange={this.handleChange}
                         required></input>
                     </div>
+                    <div className="field">
+                        <label>Podaj SWOJE hasło do autoryzacji</label>
+                        <input
+                        type="password"
+                        name="adminPassword"
+                        onChange={this.handleChange}
+                        required></input>
                     </div>
+                    </div>
+                    <label className="error-message">{this.state.error}</label>
                     <button className="panel-button" form="addAdmin" onClick={this.handleSubmit}>Dodaj</button>
                 </form>
             </div>
         )
-        return <div>{this.state.isAdded ? <Redirect push to="/admin/administratorzy"/> : renderForm}</div>
+        return <div>{this.state.isAdded ? <Redirect push to="/admin/admins"/> : renderForm}</div>
 
     }
 }

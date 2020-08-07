@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { customerLogin } from '../actions';
 import { Redirect } from 'react-router-dom';
+import ShopMenu from './ShopMenu';
+import { baseURL } from '../api/index'
 
 class LoginPage extends React.Component {
     constructor(props) {
@@ -15,9 +17,13 @@ class LoginPage extends React.Component {
 
     handleSubmit = async e => {
         e.preventDefault();
+        try {
         const { login, password } = this.state;
         await this.props.customerLogin(login, password);
-        this.setState({isLogged: true});
+        this.setState({isLogged: true}); }
+        catch (err) {
+            this.setState({error: err.response.data})
+        }
     }
     handleChange = event => {
         switch (event.target.name) {
@@ -36,10 +42,10 @@ class LoginPage extends React.Component {
     render() {
 
         const renderform = (
-            <div className="customer-form">
+            <div className="ui form customer-form">
                 <form id="customerLogin">
-                    <div className="customer-form-container"><div className="customer-form-header">Zaloguj się:</div>
-                    <div className="customer-form-field">
+                    <div className="customer-form-container"><div className="shop-form-header">Zaloguj się:</div>
+                    <div className="field">
                         <label>Login</label>
                         <input
                         type="text"
@@ -47,7 +53,7 @@ class LoginPage extends React.Component {
                         onChange={this.handleChange}
                         required></input>
                     </div>
-                    <div className="customer-form-field">
+                    <div className="field">
                         <label>Hasło</label>
                         <input
                         type="password"
@@ -55,14 +61,21 @@ class LoginPage extends React.Component {
                         onChange={this.handleChange}
                         required></input>
                     </div>
-                    <button className="button" form="customerLogin" onClick={this.handleSubmit}>Zaloguj!</button>
-
+                    <button className="button-basket" form="customerLogin" onClick={this.handleSubmit}>Zaloguj się</button>
+                    {this.state.error}
                     </div>
                 </form>
+                <p>Nie pamiętasz hasła?</p>
+                <a href={`${baseURL}/sklep/przypomnij_haslo`}><button className="button-basket">Przypomnij hasło</button></a>
+                <p>Nie masz konta?</p>
+                <a href={`${baseURL}/sklep/rejestracja`}><button className="button-basket">Dołącz teraz</button></a>
+                
             </div>
         )
         return(
-               <div>{this.state.isLogged ? <Redirect push to="/sklep"/> : renderform}</div>
+            <div className="shop-content"><ShopMenu/>
+                   {this.state.isLogged ? <Redirect push to="/sklep"/> : renderform}
+            </div>
         )
     }
 }

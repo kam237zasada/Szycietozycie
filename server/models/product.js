@@ -1,6 +1,8 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
 const {categorySchema} = require('./category');
+const {variantSchema} = require('./variant');
+const {colorSchema} = require('./color');
 
 const Product = mongoose.model('Product', new mongoose.Schema({
     name: {
@@ -12,12 +14,14 @@ const Product = mongoose.model('Product', new mongoose.Schema({
         required: true
     },
     color: {
+        type: Array
+    },
+    shortDescription: {
         type: String,
-        required: true
+        maxlength: 150
     },
     description: {
-        type: String,
-        required: true
+        type: String
     },
     productCode: {
         type: String,
@@ -32,11 +36,32 @@ const Product = mongoose.model('Product', new mongoose.Schema({
         required: true
     },
     productImage: {
-        type: String
+        type: Array
+    },
+    shipmentTime: {
+        type: String,
+        required: true
+    },
+    tags: {
+        type: Array
+    },
+    alternatives: {
+        type: Array
     },
     dateAdded: {    
-        type: Date,
-        default: Date.now
+        type: Number,
+        default: Date.now()
+    },
+    variant: {
+        type: Object,
+    },
+    views: {
+        type: Number,
+        default: 0
+    },
+    sold: {
+        type: Number,
+        default: 0
     },
     ID: {
         type: Number
@@ -47,12 +72,17 @@ function validateProduct(product) {
     const schema = {
         name: Joi.string().min(3).max(70).required(),
         categoryId: Joi.objectId().required(),
-        color: Joi.string().required(),
-        description: Joi.string().min(3).max(1000).required(),
+        color: Joi.array(),
+        shortDescription: Joi.string().allow(''),
+        description: Joi.string().allow(''),
         productCode: Joi.string().required(),
         price: Joi.number().min(0.01).required(),
         numberInStock: Joi.number().min(0).required(),
-        productImage: Joi.string(),
+        productImage: Joi.array(),
+        shipmentTime: Joi.string().required(),
+        tags: Joi.array(),
+        alternatives: Joi.array(),
+        variantId: Joi.string().allow(''),
         ID: Joi.number()
     };
     return Joi.validate(product, schema)

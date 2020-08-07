@@ -1,21 +1,55 @@
 import React from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import { faHome, faUserCircle, faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
-import { getCustomer} from '../actions';
+import { getCustomer, getBasket} from '../actions';
 import { connect } from 'react-redux';
 import Basket from './Basket';
 import Profile from './Profile';
+import { getCookie, countProducts } from '../js/index';
+import {baseURL} from '../api/index';
+import { getCategories } from '../actions';
+import { changeString } from '../js/index';
+
+
 
 
 class ShopHeader extends React.Component {
     constructor(props){
         super(props)
-        this.state= { id: '', search: '', dropdown: false, isLogged: false }
+        this.state= { id: '', search: '', dropdown: false, isLogged: false, showMenu: false, loaded: false, showQuery:false }
     }
+
     componentDidMount = async () => {
-        const customerid = localStorage.getItem('customerid');
-        if (customerid) { await this.props.getCustomer(customerid);
-            this.setState({isLogged: true})}
+        const customerid = getCookie('customerId');
+        const jwt = getCookie('jwt')
+
+        try {
+            await this.props.getCustomer(customerid, jwt);
+            if(!this.props.customer.login) { 
+                await this.props.customerLogout()
+            } else {
+                this.setState({isLogged: true})}
+    
+            } catch (err) {
+                
+            }
+            await this.props.getCategories()
+            this.setState({loaded: true})
+
+            let basketId = getCookie("basketId");
+            if(!basketId) {             
+                return
+            } 
+            await this.props.getBasket(basketId);
+            const sum = countProducts(this.props.basket.products);
+            this.setState({amount: sum});
+            let redDot = document.getElementsByClassName("basket-items");
+            
+                redDot = Array.from(redDot);
+                redDot.map(element => {
+                    return element.style.display="block";
+                })
+
+
+            
     } 
 
     handleChange = event => {
@@ -24,6 +58,8 @@ class ShopHeader extends React.Component {
                 console.log(event.target.value)
                 this.setState({ search: event.target.value });
                 break;
+                default:
+                    break;
         }
     }
      
@@ -35,7 +71,35 @@ class ShopHeader extends React.Component {
         }
         else { this.setState({dropdown: false})}
     }
+
+    handleShowQuery = () => {
+        if(!this.state.showQuery) {
+            this.setState({showQuery: true})
+            this.setState({showMenu: false})
+        } else { this.setState({showQuery: false})}
+    }
+
+    handleQuery = e => {
+        e.preventDefault();
+        window.location.replace(`${baseURL}/sklep/q/szukaj/query=${this.state.search}`);
+    }
+
+    handleClickMenu = e => {
+        if(!this.state.showMenu) {
+            this.setState({showMenu: true})
+            this.setState({showQuery: false})
+        } else { this.setState({showMenu: false})}
+    }
+
+    renderCategories = () => {
+        return this.props.categories.map(category => {
+            let newString = changeString(category.name);
+
+            return <div className="mobile-category-item"><a href={`/sklep/c/${newString}/${category.ID}`}>{category.name}</a></div>
+        })
+    }
     render() {
+
 
         const contentIfLogged = (
             <div className="shop-dropdown-menu">
@@ -55,30 +119,49 @@ class ShopHeader extends React.Component {
                 {this.state.isLogged ? contentIfLogged : contentIfNotLogged}
             </div>
         )
-        return (
-            <div className="header">
-                <div className="shop-header-container">
-                <div className="header-logo shop-header-item"><a href="/"><FontAwesomeIcon icon={faHome}/></a></div>
-                <div className="ui icon input">
+
+        const showMenu = (
+            <div className="mobile-category-list">{this.renderCategories()}</div>
+        )
+
+        const showQuery = (
+            <div style={{zIndex:2}} className="search-input">
+                    <form>
+                        <div className="ui input icon" style={{width: "100%"}}>
                     <input 
+                    className="search-input-mobile"
                     type="text" 
                     name="search"
                     placeholder="Szukaj..."
+                    value={this.state.search}
                     onChange={this.handleChange}/>
-                    <a className="search-button" href={`/sklep/q/szukaj/query=${this.state.search}`}><i className="search icon"></i></a>
-                </div>
-                <Basket/>
-                <Profile customer={this.props.customer}/>
+                    <button className="search-button" onClick={this.handleQuery}><i className="search icon"></i></button>
+                    </div>
+                    </form>
+                    </div>
+        )
+
+        const isLoaded = (
+            <>{this.state.showMenu ? showMenu : null}
+            {this.state.showQuery ? showQuery : null}
+            <div className="shop-header-container">
+                <button onClick={this.handleClickMenu} className="shop-header-menu"><i className="fas fa-bars shop-header-item"></i></button>
+                <button onClick={this.handleShowQuery} className="shop-header-menu"><i className="fas fa-search shop-header-item"></i></button>
+                <Basket className="shop-header-menu" Basket products={this.state.amount}/>
+                <Profile className="shop-header-menu" customer={this.props.customer}/>
             </div>
-            <div>{this.state.dropdown ? dropdownmenu: null}</div>
-            </div>
+            
+            <div>{this.state.dropdown ? dropdownmenu : null}</div></>
+        )
+        return (
+        <>{this.state.loaded ? isLoaded : <div>Wczytywanie strony...</div>}</>
         )
     }
 }
 const mapStateToProps = state => {
-    return { customer: state.customer };
+    return { customer: state.customer, basket: state.basket, categories: state.categories };
 };
 export default connect(
     mapStateToProps,
-    { getCustomer }
+    { getCustomer, getBasket, getCategories }
 )(ShopHeader);

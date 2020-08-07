@@ -24,6 +24,13 @@ const adminSchema = new mongoose.Schema({
         minlength: 8,
         maxlength: 100
     },
+    role: {
+        type: String,
+        default: "ADMIN"
+    },
+    ID: {
+        type: Number
+    },
     dateCreated: {
         type: Date,
         default: Date.now
@@ -37,7 +44,8 @@ function validateAdmin(admin) {
         email: Joi.string().min(3).max(100).email().required(),
         name: Joi.string().min(5).required(),
         password: Joi.string().min(8).max(100).required(),
-        confirmPassword: Joi.string().min(8).max(100).required()
+        confirmPassword: Joi.string().min(8).max(100).required(),
+        adminPassword: Joi.string().required()
     };
     return Joi.validate(admin, schema);
 };

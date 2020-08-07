@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getCategory, updateCategory, deleteCategory } from '../../actions';
 import { Redirect } from 'react-router-dom';
+import { getCookie } from '../../js';
 
 class UpdateCategoryForm extends React.Component {
     constructor(props) {
@@ -10,7 +11,8 @@ class UpdateCategoryForm extends React.Component {
             _id: null,
             name: '',
             isUpdated: false,
-            isDeleted: false
+            isDeleted: false,
+            error: ''
         }
     }
 
@@ -31,13 +33,19 @@ class UpdateCategoryForm extends React.Component {
 
     handleUpdate = async (e) => {
         e.preventDefault();
+        const jwt = getCookie('jwt');
+        try {
         const {_id, name} = this.state;
-        await this.props.updateCategory(_id, name);
+        await this.props.updateCategory(_id, name, jwt);
         this.setState({isUpdated: true});
+        } catch (err) { 
+            this.setState({error: err.response.data})
+        }
     }
     handleDelete = async e => {
         e.preventDefault();
-        await this.props.deleteCategory(this.state._id);
+        const jwt = getCookie('jwt');
+        await this.props.deleteCategory(this.state._id, jwt);
         this.setState({isDeleted: true});
     }
     render() {
@@ -57,6 +65,7 @@ class UpdateCategoryForm extends React.Component {
                         required></input>
                     </div>
                     </div>
+                    <label className="error-message">{this.state.error}</label>
                     <button className="panel-button" form="editCategory" onClick={this.handleUpdate}>Edytuj</button><button className="panel-button" onClick={this.handleDelete}>USUŃ</button>
                 </form>
             </div>

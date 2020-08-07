@@ -1,0 +1,85 @@
+const jwt = require('jsonwebtoken');
+const { TOKEN_SECRET } = require('../config/index')
+
+
+exports.generateTokens = (req, user) => { 
+    const ACCESS_TOKEN = jwt.sign({ 
+            sub: user._id, 
+            rol: user.role, 
+            type: 'ACCESS_TOKEN' 
+        }, 
+        TOKEN_SECRET, { 
+            expiresIn: 3600000
+        }); 
+    const REFRESH_TOKEN = jwt.sign({ 
+            sub: user._id, 
+            rol: user.role, 
+            type: 'REFRESH_TOKEN' 
+        }, 
+        TOKEN_SECRET, { 
+            expiresIn: 3600000 
+        }); 
+    return { 
+        accessToken: ACCESS_TOKEN, 
+        refreshToken: REFRESH_TOKEN 
+    } 
+} 
+
+exports.generateOrderToken = (req, order) => {
+    const ACCESS_TOKEN = jwt.sign({
+        sub: order.ID,
+        rol: order.customer,
+        type: 'ACCESS_TOKEN'
+    },
+    TOKEN_SECRET, {
+        expiresIn: 2678400000
+    });
+    return {
+        accessToken: ACCESS_TOKEN
+    }
+}
+exports.accessTokenVerify = (req, res, next) => {
+    if (!req.headers.token) { 
+        return res.status(401).send(
+            'Nieautoryzowany dostęp' 
+        ); 
+    } 
+
+    const token = req.headers.token;
+    jwt.verify(token, TOKEN_SECRET, function(err) { 
+        if (err) { 
+            return res.status(401).send(
+                "Błędne dane autoryzacji"
+            ); 
+        } 
+
+        const decoded = jwt.decode(token);
+    if(decoded.rol!="ADMIN") { return res.status(401).send("Nie masz uprawnień")}
+        next(); 
+    }); 
+}
+
+exports.accessTokenVerifyCustomer = (req, res, next) => {
+    if (!req.headers.token) { 
+        return res.status(401).send(
+            'Nieautoryzowany dostęp' 
+        ); 
+    } 
+    const token = req.headers.token;
+
+
+    jwt.verify(token, TOKEN_SECRET, function(err) { 
+        if (err) { 
+            return res.status(401).send(
+                "Błędne dane autoryzacji"
+            ); 
+        } 
+        const decoded = jwt.decode(token);
+
+    if(decoded.rol==="CUSTOMER") {
+        if(req.params.id!=decoded.sub) { return res.status(401).send("Nieautoryzowany dostęp!")}
+    }
+ 
+        next(); 
+    }); 
+}

@@ -96,8 +96,288 @@
 .upload-image {
     max-width: 200px;
     max-height: 200px;
+    margin: 15px;
 }
+
+.image-preview-container {
+    position: relative;
+}
+
+.images-preview {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.close-image-preview {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 1;
+    background-color: red;
+    padding: 2px;
+    border: none;
+    border-radius: 20% 20%;
+}
+
 .error-message {
     color: red;
     font-size: 15px;
+}
+
+.status-changed {
+    border: 2px solid green;
+    width: 200px;
+    height: 50px;
+    background-color: rgb(106, 204, 106);
+    position:fixed;
+    right: 50px;
+    bottom: 10px;;
+    text-align: center;
+    font-size: 20px;
+}
+
+.products-list {
+    font-size: 25px;
+    padding: 20px;
+    margin-left: 50px;
+}
+
+.products-table {
+    width: 100vw;
+    border-top: 2px solid green;
+    padding: 20px;
+}
+
+.products-table thead {
+    height: 100px;
+    font-size: 20px;
+    text-align: left;
+}
+
+.products-table-body tr {
+    height: 70px;
+}
+
+.product-row {
+    font-size: 24px;
+    height: 70px;
+}
+
+.table-shipment {
+    text-align: right;
+    font-size: 22px;
+}
+
+.table-shipment-name {
+    font-size: 22px;
+    text-align: center;
+}
+
+.table-price {
+    font-size: 24px;
+}
+
+.table-payment {
+    font-size: 24px;
+    text-align: center;
+}
+
+.order-label-method {
+    text-align: right;
+    position: relative;
+    right: 1%;
+    font-size: 22px;
+}
+
+.order-identities-container {
+    display: flex;
+    width: 80vw;
+    padding: 15px;
+}
+
+.order-identities-label {
+    font-style: italic;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.identities-item {
+    width: 25vw;
+}
+
+.order-identities {
+    padding: 15px;
+}
+
+.order-identities-data {
+    font-weight: bold;
+}
+
+.order-status select {
+    margin: 20px;
+}
+
+.order-comment-container {
+    padding: 15px;
+}
+
+.order-private-comment {
+    padding: 15px;
+    display: block;
+}
+
+.description-icon {
+    font-size: 25px;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    padding-top: 3px;
+    border: 1px solid black;
+}
+
+.description-frame {
+    background-color: white;
+    width: 100%;;
+    height: 400px;
+    border: 1px solid gray;
+    padding: 40px;
+    margin: 1px;
+}
+
+.select-text-editor {
+    width: 10%;
+}
+
+.form {
+    width: 30%;
+}
+
+#fontSize, #fontName {
+    width: 200px
+}
+
+.customer-message-container {
+    width: 70vw;
+    display: flex;
+    justify-content: center;
+    padding: 25px;
+}
+
+.order-messages {
+    padding: 15px;
+}
+
+.field-message {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+.button-for-sendmessage {
+    align-self: flex-end;
+}
+
+.message-label {
+    font-weight: bold;
+    font-size: 14px;
+    padding: 10px;
+}
+
+#sendMessage {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.values-field {
+    width: 40%;
+}
+
+.values-field input {
+    margin-bottom: 15px!important;
+}
+
+.red {
+    background-color: red!important;
+}
+
+.flex  {
+    display: flex;
+}
+
+.flex button {
+    margin: 5px;
+}
+
+.checkbox-label {
+    display: flex!important;
+    width: 5%;
+}
+
+#privateCommentArea {
+    background-color: lightgray;
+}
+
+#privComAddBut {
+    display: none;
+}
+.products-panel-header {
+    width: 100%;
+    height: 30px;
+    background-color: green;
+}
+
+.page {
+    margin: 5px;
+    width: 20px;
+}
+
+.page-number {
+    width: 30px;
+    height: 30px;
+}
+
+.disabled {
+    background-color: #B25D25;
+    color: black;
+}
+
+.top-menu {
+    height: 30px;
+    background-color: rgb(17, 71, 102);
+    width: 100%;
+    display: flex;
+}
+
+.top-menu-button {
+    background-color: var(--content-background);
+    border: none;
+    border-bottom: 1px solid black;
+    width: 150px;
+    /* color: rgb(151, 148, 148); */
+}
+
+.button-active {
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+    border-bottom: 1px solid #CBFCFC;
+
+}
+
+#password-container {
+    position: fixed;
+    top: 30vh;
+    left: 30vw;
+    height: 40vh;
+    width: 40vw;
+    background-color: white;
+    border: 2px solid green;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.password-confirmation-input {
+    border-radius: 5px 5px;
 }

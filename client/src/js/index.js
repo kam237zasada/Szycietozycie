@@ -7,6 +7,16 @@ export function changeView(price) {
     return withoutDot
 };
 
+export function deleteWhiteSpaces(string) {
+  while (string.charAt(0)===' ') {
+    string = string.substr(1);
+  }
+  while (string.charAt(string.length-1)===' ') {
+    string = string.substring(0, (string.length-1))
+  }
+  return string
+}
+
 export function changeString(productName) {
     let stringName = productName.toString();
     let stringName2 = stringName.toLowerCase().replace(" ", "-").replace("ó", "o").replace("ą", "a").replace("ę", "e").replace("ś", "s").replace("ł", "l").replace("ż", "z").replace("ć", "c").replace("ń", "n");
@@ -24,8 +34,7 @@ export function deleteCookie(cookieName) {
     let d = new Date();
       d.setTime(d.getTime() + 1);
     let expires = "expires="+d.toUTCString();
-    console.log(expires);
-    document.cookie = cookieName + "=" + "" + ";" + expires + ";path=/";
+    document.cookie = cookieName + "=" + " " + ";" + expires + ";path=/";
 }
 
 export function getCookie(cookieName) {
@@ -43,3 +52,26 @@ export function getCookie(cookieName) {
     }
     return "";
   }
+
+export function countProducts(products) {
+    let sum = 0;
+        for (let i=0; i<products.length; i++) {
+            sum += products[i].amount;
+        }
+        return sum
+}
+
+export function changeLocation(location) {
+  let index = location.lastIndexOf("/");
+  let newLocation = location.slice(0,index);
+  return newLocation
+}
+
+export function getDate(date) {
+  return `${date.getFullYear()}-${lz((date.getMonth()+1))}-${lz(date.getDate())} ${lz(date.getHours())}:${lz(date.getMinutes())}:${lz(date.getSeconds())}`
+}
+
+function lz(number) {
+      return `${number}`.padStart(2, "0");
+}
+

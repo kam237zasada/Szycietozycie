@@ -21,17 +21,18 @@ class ProfileMenu extends React.Component {
     handleLogout = async e => {
         e.preventDefault();
         await this.props.customerLogout();
+        window.location.reload();
     }
 
     render() {
 
         const dropdownmenu = (
-            <div className="shop-dropdown-menu">
-            <a href="/sklep/moje-konto"><div className="shop-dropdown-item">Moje konto</div></a>
-            <a href="/sklep/moje-konto"><div className="shop-dropdown-item">Koszyk</div></a>
-            <a href="/sklep/moje-konto"><div className="shop-dropdown-item">Zamówienia</div></a>
-            <a href="" className="shop-dropdown-item" onClick={this.handleLogout}>Wyloguj się</a>
-            </div>
+            <><div className="shop-dropdown-menu">
+            <a href="/sklep/my_account"><div className="shop-dropdown-item">Moje konto</div></a>
+            <a href="/sklep/b/basket"><div className="shop-dropdown-item">Koszyk</div></a>
+            <a href="/sklep/my_orders"><div className="shop-dropdown-item">Zamówienia</div></a>
+            <a href="/sklep" className="shop-dropdown-item" onClick={this.handleLogout}>Wyloguj się</a>
+            </div></>
         )
         return(
             <div>

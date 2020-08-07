@@ -1,45 +1,71 @@
 import React from 'react';
 import { getStatuses } from '../../actions';
 import { connect } from 'react-redux';
+import {getCookie} from '../../js';
 
-
-
-function StatusesTable({statuses}) {
-    return statuses.map( status => {
-        return (
-            <tr>
-                <td data-label="Nazwa"><a href={`/admin/statusy/${status.ID}`}>{status.name}</a></td>
-            </tr>
-        )
-    }
-    )
-   }
 
 class Statuses extends React.Component {
     constructor(props) {
         super(props);
+        this.state= {
+            statuses:[],
+            loaded: false
+        }
     }
     async componentDidMount() {
-       await this.props.getStatuses();
+        const jwt = getCookie("jwt")
+       await this.props.getStatuses(jwt);
+       this.setState({statuses: this.props.statuses})
+       this.setState({loaded: true})
+    }
+
+    renderStatuses() {
+        return this.state.statuses.map(status => {
+            if(status.isDefault===true) {
+            return (
+                <tr>
+                    <td data-label="Nazwa"><a href={`/admin/statuses/edit/${status.ID}`}>{status.name}</a></td>
+                    <td data-label="Typ">{status.type}</td>
+                    <td data-label="Domyslny">TAK</td>
+                </tr>
+        )
+            } else {
+                return (
+                    <tr>
+                        <td data-label="Nazwa"><a href={`/admin/statuses/edit/${status.ID}`}>{status.name}</a></td>
+                        <td data-label="Typ">{status.type}</td>
+                        <td data-label="Domyslny"></td>
+                    </tr>
+            )
+            }
+     }
+        )
     }
     render() {
-        return(
-            <div className="content-container">
-            <div className="products-navigation-header">
-                <a href={"/admin/statusy/dodaj"}><button className="panel-button">+ dodaj status</button></a>
-                <div className="ui icon input">
-                    <input type="text" placeholder="Szukaj..."/>
-                    <i className="search icon"></i>
-                </div>            </div>
+
+        const renderTable = (
+            <><div className="products-navigation-header">
+                <a href={"/admin/statuses/add"}><button className="panel-button">+ dodaj status</button></a>
+                </div>
             <div className="ui relaxed divided list"><table className="ui celled table">
             <thead>
-            <tr><th>Nazwa</th>
+            <tr>
+                <th>Nazwa</th>
+                <th>Typ</th>
+                <th>Domyślny</th>
             </tr></thead>
             <tbody>
-            <StatusesTable statuses={this.props.statuses}/>
+            {this.renderStatuses()}
             </tbody>
             </table>
-            </div>            
+            </div></>
+        )
+        const loading = (
+            <div>Wczytywanie...</div>
+        )
+        return(
+            <div className="content-container">
+                   {this.state.loaded ? renderTable : loading}    
             </div>
         )
     }

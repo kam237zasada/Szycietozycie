@@ -2,13 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addPayment } from '../../actions';
 import { Redirect } from 'react-router-dom';
+import { getCookie } from '../../js/index';
 
 class NewPaymentForm extends React.Component {
     constructor(props) {
         super(props)
     this.state = {
             _id: null,
-            name: ''
+            name: '',
+            error:''
         }
     }
     handleChange = event => {
@@ -23,9 +25,14 @@ class NewPaymentForm extends React.Component {
 
     handleSubmit = async event => {
         event.preventDefault();
+        const jwt = getCookie("jwt")
+        try {
         const {name} = this.state;
-        await this.props.addPayment(name);
+        await this.props.addPayment(name, jwt);
         this.setState({isAdded: true});
+        } catch (err) {
+            this.setState({error: err.response.data})
+        }
     }
     render() {
                    
@@ -44,6 +51,7 @@ class NewPaymentForm extends React.Component {
                         required></input>
                     </div>
                     </div>
+                    <label className="error-message">{this.state.error}</label>
                     <button className="panel-button" form="addPayment" onClick={this.handleSubmit}>Dodaj</button>
                 </form>
             </div>

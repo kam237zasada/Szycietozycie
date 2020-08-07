@@ -1,5 +1,6 @@
 const {Category, validateCategory} = require('../models/category');
 const {Product} = require('../models/product');
+
 getCategories = async (req, res) => {
     const categories = await Category.find().sort('name')
     res.send(categories);
@@ -40,7 +41,7 @@ addCategory = async (req, res) => {
             name: newCategory.name,
             ID: currentNumber
         });
-    } catch (error) { res.status(400).send(error); }
+    } catch (error) { res.status(500).send("Cos poszło nie tak"); }
 
 };
 
@@ -53,7 +54,7 @@ updateCategory = async (req, res) => {
     if(error) { return res.status(400).send(error.details[0].message)};
 
     let existCategory = await Category.findOne({name: req.body.name});
-    if (existCategory && existCategory._id != category._id) { return res.status(400).send("Kategoria o takiej nazwie już istnieje.")};
+    if (existCategory && existCategory._id != req.params.id) { return res.status(400).send("Kategoria o takiej nazwie już istnieje.")};
 
     category.set({
         name: req.body.name
@@ -65,13 +66,12 @@ updateCategory = async (req, res) => {
             name: category.name,
             message: "Kategoria zaktualizowana"
         });
-    } catch (error) { return res.status(400).send(error); }
+    } catch (error) { return res.status(500).send("Cos poszło nie tak"); }
 };
 
 deleteCategory = async (req, res) => {
 
     const product = await Product.findOne({"category._id": req.params.id});
-    console.log(product)
     if(product) {return res.status(400).send("Nie można usunąć kategorii, która jest przypisana do produktów.")};
     
     const category = await Category.findByIdAndDelete(req.params.id);

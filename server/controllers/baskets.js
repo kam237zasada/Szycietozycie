@@ -1,7 +1,6 @@
 const {Basket, validateBasket} = require('../models/basket');
 const {Product} = require('../models/product');
 const mongoose = require('mongoose'); 
-const mongodb = require('mongodb');
 
 
 
@@ -11,14 +10,13 @@ getBaskets = async (req, res) => {
 };
 
 getBasket = async (req, res) => {
-    console.log(typeof req.params.id);
     let basket;
     try {
         basket = await Basket.findOne({"_id": req.params.id});
         if(!basket) return res.status(404).send("Koszyk nie istnieje");
 
 } catch (error) {
-    return res.status(400).send("Wystapił nieoczekiwany błąd.");
+    return res.status(500).send("Wystapił nieoczekiwany błąd.");
 }
 
     res.send(basket);
@@ -36,7 +34,9 @@ addBasket = async (req, res) => {
         _id: product._id,
         productImage: product.productImage,
         name: product.name,
-        color: product.color,
+        color: req.body.color,
+        variantName: req.body.variantName,
+        variantValue: req.body.variantValue,
         productCode: product.productCode,
         amount: req.body.amount,
         price: product.price,
@@ -61,8 +61,14 @@ addBasket = async (req, res) => {
             products: newBasket.products,
             cost: newBasket.cost
         });
+
     
-    } catch (error) { res.status(400).send(error);}
+    } catch (error) { res.status(500).send("Cos poszło nie tak")
+        ;}
+    
+        
+
+
 }
 
 updateBasket = async (req, res) => {
@@ -77,7 +83,7 @@ updateBasket = async (req, res) => {
     if(req.body.operation==="insertion") {
         let addNewProduct = true;
         for (let i =0; i<products.length;i++) {
-            if(products[i]._id==req.body._id) {
+            if(products[i]._id==req.body._id && products[i].color=== req.body.color && products[i].variantName===req.body.variantName && products[i].variantValue===req.body.variantValue) {
                 if(products[i].amount + req.body.amount > product.numberInStock) {return res.status(400).send("Nie ma tylu produktów na stanie!")}
                 products[i].amount += req.body.amount;
                 products.set(i, products[i]);
@@ -89,7 +95,9 @@ updateBasket = async (req, res) => {
         _id: product._id,
         productImage: product.productImage,
         name: product.name,
-        color: product.color,
+        color: req.body.color,
+        variantName: req.body.variantName,
+        variantValue: req.body.variantValue,
         productCode: product.productCode,
         amount: req.body.amount,
         price: product.price,
@@ -107,17 +115,15 @@ updateBasket = async (req, res) => {
 
         if (req.body.amount==="all") {
         for (let i =0; i<products.length;i++) {
-
-            if(products[i]._id==req.body._id) {
+            if(products[i]._id==req.body._id && products[i].color===req.body.color && products[i].variantName===req.body.variantName && products[i].variantValue===req.body.variantValue) {
                 products.splice(i, 1)
             }
         }
     
     } else { 
         for (let i=0; i<products.length;i++) {
-        if(products[i]._id==req.body._id) {
+        if(products[i]._id==req.body._id && products[i].color===req.body.color && products[i].variantName===req.body.variantName && products[i].variantValue===req.body.variantValue) {
             products[i].amount -= req.body.amount;
-            console.log(products[i].amount);
             if(products[i].amount===0) {
                 products.splice(i, 1);
             } else {
@@ -128,10 +134,6 @@ updateBasket = async (req, res) => {
     }
 }
 
-    // const { error } = validateBasket(req.body);
-    // if (error) {
-    //     return res.status(400).send(error.details[0].message);
-    // };
 
     for (i=0; i < products.length; i++) {
         sum = products[i].price * products[i].amount;
@@ -152,7 +154,7 @@ updateBasket = async (req, res) => {
             cost: basket.cost,
             message: "Koszyk zaktualizowany"
         });
-    } catch (error) { return res.status(400).send(error); }
+    } catch (error) { return res.status(500).send("Cos poszło nie tak"); }
 }
 
 deleteBasket = async (req, res) => {

@@ -11,7 +11,8 @@ class UpdateShipmentForm extends React.Component {
             name: '',
             price: '',
             isUpdated: false,
-            isDeleted: false
+            isDeleted: false,
+            error: ''
         }
     }
 
@@ -35,9 +36,13 @@ class UpdateShipmentForm extends React.Component {
 
     handleUpdate = async (e) => {
         e.preventDefault();
+        try {
         const {_id, name, price} = this.state;
         await this.props.updateShipment(_id, name, price);
         this.setState({isUpdated: true});
+        } catch (err) {
+            this.setState({error: err.response.data});
+        }
     }
     handleDelete = async e => {
         e.preventDefault();
@@ -71,6 +76,7 @@ class UpdateShipmentForm extends React.Component {
                         required></input>
                     </div>
                     </div>
+                    <label className="error-message">{this.state.error}</label>
                     <button className="panel-button" form="editShipment" onClick={this.handleUpdate}>Edytuj</button><button className="panel-button" onClick={this.handleDelete}>USUŃ</button>
                 </form>
             </div>

@@ -2,6 +2,8 @@ const express = require('express');
 const productController = require('../controllers/products');
 const router = express.Router();
 const multer = require('multer');
+const { accessTokenVerify } = require('../controllers/auth');
+const { response } = require('express');
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -10,7 +12,9 @@ const storage = multer.diskStorage({
     filename: function(req, file, cb) {
         cb(null, Date.now() + "-" + file.originalname)
     }
+    
 });
+
 
 const fileFilter = (req, file, cb) => {
     if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
@@ -22,12 +26,19 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({storage: storage, fileFilter: fileFilter});
 
 
-router.get('/', productController.getProducts);
-router.get('/category/:id', productController.getProductsByCategory);
-router.get('/query/:query', productController.getProductsByQuery);
+router.get('/', productController.getAllProducts);
+router.get('/pricefrom=:priceA/priceto=:priceB/sortBy=:sort/page/:page', productController.getProducts);
+router.get('/category/:categoryId/pricefrom=:priceA/priceto=:priceB/sortBy=:sort/page/:page', productController.getProductsByCategory);
+router.get('/query/:query/pricefrom=:priceA/priceto=:priceB/sortBy=:sort/page/:page', productController.getProductsByQuery);
 router.get('/:id', productController.getProduct);
-router.post('/add', productController.addProduct);
-router.put('/:id', productController.updateProduct);
-router.delete('/:id', productController.deleteProduct);
-router.post('/uploads', upload.single('productImage'), productController.fileUpload);
+router.get('/filter/query=:query/category=:categoryId/pricefrom=:priceA/priceto=:priceB/sortBy=:sort/page/:page', productController.getProductsByFilters)
+router.get('/sort/:sortValue/page/:page', productController.sortProducts);
+router.get('/show/popular', productController.getPopularProducts);
+router.post('/add', accessTokenVerify, productController.addProduct);
+router.put('/:id', accessTokenVerify, productController.updateProduct);
+router.put('/price/:id', accessTokenVerify, productController.updatePrice);
+router.put('/stock/:id', accessTokenVerify, productController.updateStock);
+router.put('/v/views/:id', productController.addView)
+router.delete('/:id', accessTokenVerify, productController.deleteProduct);
+router.post('/uploads', accessTokenVerify, upload.single('productImage'), productController.fileUpload);
 module.exports = router;

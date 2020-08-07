@@ -3,6 +3,7 @@ import ShopMenu from './ShopMenu';
 import {getProductsByCategory, getCategory} from '../actions';
 import { connect } from 'react-redux';
 import { changeView, changeString } from '../js/index';
+import NavigationLine from './NavigationLine';
 
 function ProductItem({product}) {
     let newPrice = changeView(product.price);
@@ -11,7 +12,7 @@ function ProductItem({product}) {
     return (
         <div className="product-card">
             <div className="place-image">
-                <img className="product-image" src={product.productImage} alt={newString}/>
+                <img className="product-image" src={product.productImage[0]} alt={newString}/>
             </div>
             <div className="product-content">
                 <a href={`/sklep/p/${newString}/${product.ID}`}className="product-name">{product.name}</a>
@@ -34,6 +35,7 @@ class CategoryView extends React.Component {
 
 componentDidMount = async () => {
     await this.props.getProductsByCategory(this.props.match.params.id);
+    await this.props.getCategory(this.props.match.params.id)
     this.setState({loaded: true});
     if(this.props.products.length===0) {this.setState({empty: true})}
 }
@@ -50,8 +52,9 @@ componentDidMount = async () => {
         )
 
         return(
-            <div className="shop-content"><ShopMenu/>
-            {this.state.loaded ? showResults : loading}
+            <div className="shop-content">
+            {this.state.loaded ? <><ShopMenu/><NavigationLine category={this.props.category}/>{showResults}</> : loading}
+
             </div>
         )
     }

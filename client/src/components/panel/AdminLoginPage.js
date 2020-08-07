@@ -1,27 +1,39 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { adminLogin } from '../../actions';
+import { adminLogin, getAdmin } from '../../actions';
 import { Redirect } from 'react-router-dom';
+import { getCookie, deleteCookie, setCookie } from '../../js/index';
+import AdminHomePage from './AdminHomePage';
 
 class AdminLoginPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {logged: false, email: '', password: ''};
+        this.state = {logged: false, email: '', password: '', error: ''};
     }
 
     async componentDidMount() {
-        const id = localStorage.getItem('id');
-        if(id) {this.setState({logged: true})}
+        const id = getCookie('adminId');
+        try {
+            await this.props.getAdmin(id)
+        if(this.props.admin.name) {this.setState({logged: true})} else {
+            setCookie('adminId', '', 0.0005)
+        }
+        } catch (err) {
+            console.log(err)
+        }
     }
-    async componentDidUpdate() {
-        const id = localStorage.getItem('id');
-        if(id) {this.setState({logged: true})}
-    }
+    
 
     handleSubmit = async event => {
         event.preventDefault();
         const {email, password} = this.state;
-        this.props.adminLogin(email, password);
+        try {
+        await this.props.adminLogin(email, password);
+        this.setState({logged: true});
+        } catch (err) {
+            console.log(err.response.data);
+            this.setState({error: err.response.data})
+        }
     }
 
     handleChange = event => {
@@ -54,24 +66,26 @@ class AdminLoginPage extends React.Component {
                         required></input>
                     </div>
                     <div className="">
-                        <label>Password</label>
+                        <label>Hasło</label>
                         <input
                         type="password"
                         name="password"
-                        placeholder="Password"
+                        placeholder="hasło..."
                         value={password}
                         onChange={this.handleChange}
                         required></input>
                     </div>
-                    <button className="" form="adminLogin" onClick={this.handleSubmit}>Log in!</button>
+                    <button className="panel-button" form="adminLogin" onClick={this.handleSubmit}>Log in!</button>
+                    <div className="error-message">{this.state.error}</div>
                 </form>
             </div>
             </div>
         )
 
+
         return(
             <div> 
-                {this.state.logged ? <Redirect push to="/admin/home" /> : mustLogin }
+                {this.state.logged ? <AdminHomePage/> : mustLogin }
             </div>
         )
     }
@@ -82,5 +96,5 @@ const mapStateToProps = state => {
 };
 export default connect(
     mapStateToProps,
-    { adminLogin }
+    { adminLogin, getAdmin }
 )(AdminLoginPage);

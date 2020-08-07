@@ -1,5 +1,9 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { TOKEN_SECRET } = require('../config/index')
 const {Admin, validateAdmin, validatePassword, validateUpdate} = require('../models/admin');
+const { generateTokens } = require('../controllers/auth')
+// const { verifyAccessToken } = require('../controllers/auth')
 
 
 getAdmins = async (req, res) => {
@@ -21,6 +25,16 @@ addAdmin = async (req, res) => {
         return res.status(400).send(error.details[0].message);
     };
 
+    let encoded = jwt.decode(req.headers.token)
+
+    let adminId = encoded.sub;
+    const admin = await Admin.findById(adminId);
+
+
+    const checkPassword = await bcrypt.compare(req.body.adminPassword, admin.password);
+    if(!checkPassword) { return res.status(401).send("Błędne dane autoryzacji. Admin nie został dodany!")};
+
+
     let findEmail = await Admin.findOne({email: req.body.email});
 
     if(findEmail) {
@@ -31,13 +45,21 @@ addAdmin = async (req, res) => {
         return res.status(400).send('Hasła w polach "hasło" oraz "potwierdź hasło" muszą byc identyczne.');
     }
 
+    let currentNumber;
+    let admins = await Admin.find();
+    if(admins.length===0) { currentNumber = 1} else {
+    let lastElementIndex = admins.length -1;
+    currentNumber = admins[lastElementIndex].ID +1;
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
     const newAdmin = new Admin({
         email: req.body.email,
         name: req.body.name,
-        password: hashedPassword
+        password: hashedPassword,
+        ID: currentNumber
     });
 
     try {
@@ -46,10 +68,11 @@ addAdmin = async (req, res) => {
             message: "Nowy administrator dodany.",
             email: newAdmin.email,
             name: newAdmin.name,
+            ID: newAdmin.ID,
             _id: newAdmin._id
         });
     
-    } catch (error) { res.status(400).send(error);}
+    } catch (error) { res.status(500).send("Coś poszło nie tak");}
 };
 
 loginAdmin = async (req, res) => {
@@ -59,11 +82,14 @@ loginAdmin = async (req, res) => {
     const checkPassword = await bcrypt.compare(req.body.password, admin.password);
     if(!checkPassword) { return res.status(400).send("Podany email lub hasło są niepoprawne.")};
     
+    let tokens = generateTokens(req, admin)
     res.send({
         message: `Administrator ${admin.name} zalogowany poprawnie.`,
         name: admin.name,
         email: admin.email,
-        _id: admin._id
+        _id: admin._id,
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken
     })
 };
 
@@ -71,8 +97,13 @@ updatePassword = async (req, res) => {
     const admin = await Admin.findById(req.params.id);
     if(!admin) return res.status(404).send("Administrator nie istnieje.");
 
-    const password = await bcrypt.compare(req.body.currentPassword, admin.password);
-    if(!password) return res.status(400).send("Podane hasło nie jest prawidłowe.");
+    let encoded = jwt.decode(req.headers.token)
+
+    let currentAdminId = encoded.sub;
+    let currentAdmin = await Admin.findById(currentAdminId);
+    
+    const password = await bcrypt.compare(req.body.adminPassword, currentAdmin.password);
+    if(!password) return res.status(400).send("Błędne dane autoryzacji. Hasło nie zostało zasktualizowane.");
 
     if(req.body.password != req.body.confirmPassword) return res.status(400).send('Pole "nowe hasło" i "potwierdź nowe hasło" muszą być takie same.');
 
@@ -92,7 +123,7 @@ updatePassword = async (req, res) => {
         res.send({
             message: "Hasło zaktualizowane."
         });
-    } catch (error) { res.status(400).send(error); }
+    } catch (error) { res.status(500).send("Cos poszło nie tak"); }
 
 }
 
@@ -108,6 +139,13 @@ updateAdmin = async (req, res) => {
     const email = await Admin.findOne({email: req.body.email});
     if(email && email._id != req.params.id) { return res.status(400).send("Istnieje już administrator o takim adresie email, proszę podać inny.")};
 
+    let encoded = jwt.decode(req.headers.token)
+
+    let currentAdminId = encoded.sub;
+    let currentAdmin = await Admin.findById(currentAdminId);
+
+    const password = await bcrypt.compare(req.body.adminPassword, currentAdmin.password);
+    if(!password) return res.status(400).send("Błędne dane autoryzacji. Admin nie został zaktualizowany.");
 
     admin.set({
         email: req.body.email,
@@ -121,10 +159,18 @@ updateAdmin = async (req, res) => {
             name: admin.name,
             message: "Dane poprawnie zaktualizowane."
         });
-    } catch (error) { res.status(400).send(error); }
+    } catch (error) { res.status(500).send("Cos poszło nie tak"); }
 };
 
 deleteAdmin = async (req, res) => {
+    let encoded = jwt.decode(req.headers.token)
+
+    let currentAdminId = encoded.sub;
+    let currentAdmin = await Admin.findById(currentAdminId);
+
+    const password = await bcrypt.compare(req.headers.password, currentAdmin.password);
+    if(!password) return res.status(400).send("Błędne dane autoryzacji. Admin nie został zaktualizowany.");
+
     const admin = await Admin.findByIdAndDelete(req.params.id);
 
     res.send({

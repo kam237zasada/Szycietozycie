@@ -1,13 +1,14 @@
 const express = require('express');
 const adminController = require('../controllers/admins');
 const router = express.Router();
+const { accessTokenVerify } = require('../controllers/auth')
 
-router.get('/', adminController.getAdmins);
-router.get('/:id', adminController.getAdmin);
-router.post('/register', adminController.addAdmin);
+router.get('/', accessTokenVerify, adminController.getAdmins);
+router.get('/:id', accessTokenVerify, adminController.getAdmin);
+router.post('/register', accessTokenVerify, adminController.addAdmin);
 router.post('/login', adminController.loginAdmin);
-router.put('/:id', adminController.updateAdmin);
-router.put('/:id/password', adminController.updatePassword);
-router.delete('/:id', adminController.deleteAdmin);
+router.put('/:id', accessTokenVerify, adminController.updateAdmin);
+router.put('/:id/password', accessTokenVerify, adminController.updatePassword);
+router.delete('/:id', accessTokenVerify, adminController.deleteAdmin);
 
 module.exports = router;

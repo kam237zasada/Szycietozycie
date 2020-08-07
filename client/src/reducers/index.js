@@ -19,6 +19,18 @@ import orderReducer from './orderReducer';
 import fetchOrders from './fetchOrders';
 import statusReducer from './statusReducer';
 import fetchStatuses from './fetchStatuses';
+import mailReducer from './mailReducer';
+import colorReducer from './colorReducer';
+import fetchColors from './fetchColors';
+import variantReducer from './variantReducer';
+import fetchVariants from './fetchVariants';
+import fetchPaczkomaty from './fetchPaczkomaty'
+import fetchDiscounts from './fetchDiscounts';
+import discountReducer from './discountReducer';
+import fetchSites from './fetchSites';
+import siteReducer from './siteReducer';
+
+
 
 export default combineReducers({
     admin: adminReducer,
@@ -40,6 +52,16 @@ export default combineReducers({
     order: orderReducer,
     orders: fetchOrders,
     status: statusReducer,
-    statuses: fetchStatuses
+    statuses: fetchStatuses,
+    mail: mailReducer,
+    variant: variantReducer,
+    variants: fetchVariants,
+    color: colorReducer,
+    colors: fetchColors,
+    paczkomaty: fetchPaczkomaty,
+    discount: discountReducer,
+    discounts: fetchDiscounts,
+    site: siteReducer,
+    sites: fetchSites
 });
 

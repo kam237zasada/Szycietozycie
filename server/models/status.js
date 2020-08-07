@@ -8,6 +8,16 @@ const statusSchema = new mongoose.Schema({
     },
     ID: {
         type: Number
+    }, 
+    type: {
+        type: String,
+        enum: ["Nowe", "Otwarte", "Zakończone"],
+        required: true
+    },
+    isDefault: {
+        type: Boolean,
+        default: false,
+        required: true
     }
 });
 
@@ -16,7 +26,9 @@ const Status = mongoose.model('Status', statusSchema);
 function validateStatus(status) {
     const schema = {
         name: Joi.string().min(2).max(50).required(),
-        ID: Joi.number()
+        ID: Joi.number(),
+        type: Joi.string().required(),
+        isDefault: Joi.boolean().required()
     };
     return Joi.validate(status, schema)
 }

@@ -28,8 +28,8 @@ const orderSchema = new mongoose.Schema({
         required: true
     },
     dateAdded: {
-        type: Date,
-        default: Date.now
+        type: Number,
+        default: Date.now()
     },
     shipment: {
         type: shipmentSchema,
@@ -43,9 +43,29 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    comment: {
+        type: String
+    },
+    privateComment: {
+        type: String,
+        default: ''
+    },
+    discountActive: {
+        type: Boolean
+    },
+    discountUsed: {
+        type: String
+    },
     status: {
         type: statusSchema,
         required: true
+    },
+    messages: {
+        type: Array,
+        default: []
+    },
+    token: {
+        type: String
     }
 });
 
@@ -59,12 +79,17 @@ function validateOrder(order) {
         invoiceIdentities: Joi.object(),
         customer: Joi.object(),
         products: Joi.array().required(),
-        dateAdded: Joi.date(),
         shipmentId: Joi.objectId().required(),
         paymentId: Joi.objectId().required(),
-        value: Joi.number().required(),
+        cost: Joi.number().required(),
         statusID: Joi.number(),
-        basketId: Joi.objectId()
+        basketId: Joi.objectId(),
+        comment: Joi.string().allow(""),
+        privateComment: Joi.string().allow(""),
+        messages: Joi.array(),
+        shipmentCost: Joi.number(),
+        discountActive: Joi.boolean(),
+        discountUsed: Joi.string().allow("")
 
     };
     return Joi.validate(order, schema)

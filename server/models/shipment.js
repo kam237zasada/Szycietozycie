@@ -12,6 +12,13 @@ const shipmentSchema = new mongoose.Schema({
     },
     ID: {
         type: Number
+    },
+    freeShipment: {
+        type: String
+    },
+    payments: {
+        type: Array,
+        required:true
     }
 });
 
@@ -21,7 +28,9 @@ function validateShipment(shipment) {
     const schema = {
         name: Joi.string().min(2).max(50).required(),
         price: Joi.number().required(),
-        ID: Joi.number()
+        ID: Joi.number(),
+        freeShipment: Joi.string().allow(''),
+        payments: Joi.array().required()
     };
     return Joi.validate(shipment, schema)
 }

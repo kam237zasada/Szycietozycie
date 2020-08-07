@@ -8,6 +8,10 @@ export default (
                 return action.payload;
             case 'UPDATE_ORDER_STATUS':
                 return action.payload;
+            case 'UPDATE_PRIVATE_COMMENT':
+                return action.payload;
+            case 'UPDATE_MESSAGES':
+                return action.payload;
             default: 
                 return state;
         }

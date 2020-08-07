@@ -9,42 +9,48 @@ class PriceList extends React.Component {
     }
 
     handlePriceButtonClick = e => {
-        alert(e.target.id)
         e.preventDefault();
         e.stopPropagation();
         switch(e.target.id) {
             case 'spodnie': 
             this.setState({clicked: 'spodnie'});
+            this.setState({dropdown: false})
             if(window.innerWidth > 700) {document.getElementById("price-list-container").style.backgroundImage= "url('./spodnie.jpg')"}
             else {document.getElementById("price-list-container").style.backgroundImage="none"};
             break;
             case 'sukienka':
             this.setState({clicked: 'sukienka'});
+            this.setState({dropdown: false})
             if(window.innerWidth > 700) {document.getElementById("price-list-container").style.backgroundImage= "url('./sukienka.jpg')"}
             else {document.getElementById("price-list-container").style.backgroundImage="none"};
             break;
             case 'plaszcz':
             this.setState({clicked: 'plaszcz'});
+            this.setState({dropdown: false})
             if(window.innerWidth > 700) {document.getElementById("price-list-container").style.backgroundImage= "url('./plaszcz.jpg')"}
             else {document.getElementById("price-list-container").style.backgroundImage="none"};
             break;
             case 'koszula':
             this.setState({clicked: 'koszula'});
+            this.setState({dropdown: false})
             if(window.innerWidth > 700) {document.getElementById("price-list-container").style.backgroundImage= "url('./koszula.jpg')"}
             else {document.getElementById("price-list-container").style.backgroundImage="none"};
             break;
             case 'spodnica':
             this.setState({clicked: 'spodnica'});
+            this.setState({dropdown: false})
             if(window.innerWidth > 700) {document.getElementById("price-list-container").style.backgroundImage= "url('./spodnica.jpg')"}
             else {document.getElementById("price-list-container").style.backgroundImage="none"};
             break;
             case 'kurtka':
             this.setState({clicked: 'kurtka'});
+            this.setState({dropdown: false})
             if(window.innerWidth > 700) {document.getElementById("price-list-container").style.backgroundImage= "url('./kurtka.jpg')"}
             else {document.getElementById("price-list-container").style.backgroundImage="none"};
             break;
             case 'inne':
             this.setState({clicked: 'inne'}); 
+            this.setState({dropdown: false})
             if(window.innerWidth > 700) {document.getElementById("price-list-container").style.backgroundImage= "url('./inne.jpg')"}
             else {document.getElementById("price-list-container").style.backgroundImage="none"};
             break;
@@ -84,6 +90,12 @@ class PriceList extends React.Component {
             <div className="price-list-item">
                 <h5>KOSZULA:</h5>
                 <ul>
+                <li className="price-item">Skracanie: 30zł</li>
+                <li className="price-item">Podwijanie: 30zł</li>
+                <li className="price-item">Obcinanie: 30zł</li>
+                <li className="price-item">Skracanie: 30zł</li>
+                <li className="price-item">Podwijanie: 30zł</li>
+                <li className="price-item">Obcinanie: 30zł</li>
                 <li className="price-item">Skracanie: 30zł</li>
                 <li className="price-item">Podwijanie: 30zł</li>
                 <li className="price-item">Obcinanie: 30zł</li>
@@ -136,10 +148,10 @@ class PriceList extends React.Component {
             <button className="price-list-option" id="spodnie" onClick={this.handlePriceButtonClick}>SPODNIE</button>
             <button className="price-list-option" id="plaszcz" onClick={this.handlePriceButtonClick}>PŁASZCZ/MARYNARKA</button>
             <button className="price-list-option" id="koszula" onClick={this.handlePriceButtonClick}>KOSZULA</button>
-            <button className="price-list-option" id="sukienka" onTouchStart={this.handlePriceButtonClick}>SUKIENKA</button>
-            <button className="price-list-option" id="spodnica" onTouchEnd={this.handlePriceButtonClick}>SPÓDNICA</button>
-            <button className="price-list-option" id="kurtka" onTouchstart={this.handlePriceButtonClick}>KURTKA</button>
-            <button className="price-list-option" id="inne" onTouchEnd={this.handlePriceButtonClick}>INNE</button>
+            <button className="price-list-option" id="sukienka" onClick={this.handlePriceButtonClick}>SUKIENKA</button>
+            <button className="price-list-option" id="spodnica" ooClick={this.handlePriceButtonClick}>SPÓDNICA</button>
+            <button className="price-list-option" id="kurtka" onClick={this.handlePriceButtonClick}>KURTKA</button>
+            <button className="price-list-option" id="inne" onClick={this.handlePriceButtonClick}>INNE</button>
             </div>
         )
         return(

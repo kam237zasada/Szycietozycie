@@ -12,7 +12,7 @@ class LandingPage extends React.Component {
                 <div className="landing-container">
                     <div className="landing-item">
                         <img className="landing-item-image" src="./uslugi.jpg"/>
-                        <h2 className="landing-item-header">Usługi krawieckie</h2>
+                        <h2 className="landing-item-header">Pracownia krawieckia</h2>
                         <p className="landing-item-content">Od ponad 20 lat świadczę szerokopojęte usługi krawieckie. Zwężanie nogawek, rękawów, skracanie spodni, koszul, sukienek. Zawsze dokładnie słucham klienta oraz jestem w stanie fachowo doradzić. Sprawdź ceny w <a href="/cennik" style={{color: "blue"}}>cenniku</a>.</p>
                     </div>
                     <div className="landing-item">

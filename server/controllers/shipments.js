@@ -33,17 +33,22 @@ addShipment = async (req, res) => {
     const newShipment = new Shipment({
         name: req.body.name,
         price: req.body.price,
-        ID: currentNumber
+        ID: currentNumber,
+        freeShipment: req.body.freeShipment,
+        payments: req.body.payments
     });
     try { 
         await newShipment.save();
         res.send({
             message: "Nowa dostawa utworzona",
-            name: newShipment.name,
+            name: newShipment.name, 
             price: newShipment.price,
-            ID: currentNumber
+            ID: newShipment.ID, 
+            freeShipment: newShipment.freeShipment,
+            payments: req.body.payments
+
         });
-    } catch (error) { res.status(400).send(error); }
+    } catch (error) { res.status(500).send("Coś poszło nie tak"); }
 
 };
 
@@ -56,22 +61,27 @@ updateShipment = async (req, res) => {
     if(error) { return res.status(400).send(error.details[0].message)};
 
     let existShipment = await Shipment.findOne({name: req.body.name});
-    if (existShipment && existShipment._id != shipment._id) { return res.status(400).send("Dostawa o takiej nazwie już istnieje.")};
+    if (existShipment && existShipment._id != req.params.id) { return res.status(400).send("Dostawa o takiej nazwie już istnieje.")};
 
     shipment.set({
         name: req.body.name,
-        price: req.body.price
+        price: req.body.price,
+        freeShipment: req.body.freeShipment,
+        payments: req.body.payments
     });
-
+    
     try {
         await shipment.save();
         res.send({
-            name: shipment.name,
-            price: shipment.price,
+            _id: shipment._id,
+            name: shipment.name, 
+            price: shipment.price, 
             ID: shipment.ID,
+            freeShipment: shipment.freeShipment,
+            payments: req.body.payments,
             message: "Dostawa zaktualizowana"
         });
-    } catch (error) { return res.status(400).send(error); }
+    } catch (error) { return res.status(500).send("Coś poszło nie tak"); }
 };
 
 deleteShipment = async (req, res) => {

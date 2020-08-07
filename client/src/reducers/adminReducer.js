@@ -1,11 +1,11 @@
 export default (
-    state = {name: ''},
+    state = {},
     action) => {
         switch (action.type) {
             case 'ADMIN_LOGIN':
                 return action.payload;
             case 'ADMIN_LOGOUT':
-                return {name: '', email: ''};
+                return {};
             case 'GET_ADMIN':
                 return action.payload;
             case 'ADD_ADMIN':
