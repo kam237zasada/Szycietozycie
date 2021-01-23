@@ -55,7 +55,6 @@ class ShopHeader extends React.Component {
     handleChange = event => {
         switch (event.target.name) {
             case 'search':
-                console.log(event.target.value)
                 this.setState({ search: event.target.value });
                 break;
                 default:

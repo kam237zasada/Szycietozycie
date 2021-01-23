@@ -52,8 +52,8 @@ const customerSchema = new mongoose.Schema({
         default: "CUSTOMER"
     },
     dateCreated: {
-        type: Date,
-        default: Date.now
+        type: Number,
+        default: Date.now()
     }
 })
 

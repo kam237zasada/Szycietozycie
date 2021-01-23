@@ -18,6 +18,16 @@ import SingleOrder from './SingleOrder';
 
 class Shop extends React.Component {
 
+    componentDidMount = () => {
+        let head = document.getElementsByTagName("head");
+        let title = document.getElementsByTagName("title");
+        title[0].innerHTML = "Modne torebki skórzane | Torebki handmade | sklep internetowy";
+        let description = document.createElement("meta");
+        description.setAttribute("name", "description");
+        description.setAttribute("content", "Sklep internetowy z torebkami, sam wybierasz wzór! Idealne na prezent. Modne torebki damskie oraz organizery na torebki, nerki, workoplecaki! ");
+        head[0].appendChild(description)
+    }
+
     render() {
         return(
             <div>

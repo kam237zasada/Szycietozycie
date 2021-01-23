@@ -7,6 +7,7 @@ import { Redirect } from 'react-router-dom';
 import { RenderShipments } from './RenderShipments.js';
 import { RenderPayments } from './RenderPayments.js';
 import { faJournalWhills, faIgloo } from '@fortawesome/free-solid-svg-icons';
+import { baseURL } from '../api/index'
 
 
 class BasketView extends React.Component {
@@ -915,14 +916,15 @@ class BasketView extends React.Component {
                     value="differentAddress"/>
                     <label for="differentAddress"> Inny adres dostawy</label></> }
                     <br/>
-                    <input 
+                    {/* <input 
                     className="checkbox"
                     type="checkbox" 
                     id="invoice" 
                     name="invoice" 
                     onChange={this.handleInvoice} 
                     value="invoice"/>
-                    <label for="invoice"> Chcę fakturę</label>
+                    <label for="invoice"> Chcę fakturę</label> */}
+                    {/* Checkbox dla faktury */}
                 </form>
             </div>
             {this.state.differentAddress ? differentAddress : null}
@@ -1041,9 +1043,10 @@ class BasketView extends React.Component {
                 </div>
                 {this.state.differentAddress || this.state.showPaczkomaty ? showDifferentAddress : noDifferentAddress}
                 {this.state.invoice ? showInvoice : <div className="summary-identities-child">
-                    <h2>Faktura</h2>
+                    {/* <h2>Faktura</h2>
 
-                    <div>Nie wybrano</div>
+                    <div>Nie wybrano</div> */}
+                    
                     </div>}
             </div>
             <div className="basket-action">
@@ -1136,7 +1139,7 @@ class BasketView extends React.Component {
 
         const isEmpty = (
             <div id="basket-container" className="basket-container">                                {this.state.error}
-            {this.state.empty ? <div>Koszyk jest pusty, przykro mi, kup se coś najpierw</div> : hideBasket}
+            {this.state.empty ? <div>Twój koszyk jest. Przejdź do <a style={{textDecoration:"underline"}}href={`${baseURL}/sklep`}>sklepu</a>, by rozpocząć zakupy.</div> : hideBasket}
             </div>
         )
 

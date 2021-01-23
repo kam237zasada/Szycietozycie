@@ -7,7 +7,7 @@ export function Pages({overallPages, currentPage, page}) {
             if(overallPages.length < 4) {
             if(currentPage==element) {
         return (
-            <button className="button-basket disabled page" disabled="true">{element}</button>
+            <button className="button-basket disabled page" disabled={true}>{element}</button>
             )
         } else {
             if(page) {

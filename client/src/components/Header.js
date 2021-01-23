@@ -38,7 +38,7 @@ handleQuery = e => {
 componentDidMount = async () => {
     const customerid = getCookie('customerId');
     const jwt = getCookie('jwt');
-
+    if(customerid!="" || jwt!="") {
     try {
         await this.props.getCustomer(customerid, jwt);
         if(!this.props.customer.login) { 
@@ -49,6 +49,7 @@ componentDidMount = async () => {
         } catch (err) {
 
         }
+    }
 
         let basketId = getCookie("basketId");
         if(!basketId) {
@@ -80,7 +81,7 @@ componentDidMount = async () => {
         return (
         
             <div className="header"><div className="header-container">
-                <div className="header-logo"><a href="/"><img className="logo-image" src={`${serverbaseURL}/product/uploads/logo.png`}></img></a></div>
+                <div className="header-logo"><a href="/"><img className="logo-image" src={`${serverbaseURL}/product/uploads/logo.png`} alt="logo"></img></a></div>
                 <a href="/o-mnie"><div className="header-item">O MNIE</div></a>
                 <a href="/sklep"><div className="header-item">SKLEP</div></a>
                 <a href="/cennik"><div className="header-item">PRACOWNIA KRAWIECKA</div></a>
@@ -94,7 +95,7 @@ componentDidMount = async () => {
                     placeholder="Szukaj..."
                     value={this.state.search}
                     onChange={this.handleChange}/>
-                    <button className="search-button" onClick={this.handleQuery}><i className="search icon"></i></button>
+                    <button name="search-button" className="search-button" onClick={this.handleQuery}><i className="search icon"></i></button>
                     </div>
                     </form>
                     </div>
@@ -103,12 +104,12 @@ componentDidMount = async () => {
             </div>
             <div className="header-small">
             <div className="header-logo header-small-item"><a  href="/"><img className="logo-image" src={`${serverbaseURL}/product/uploads/logo.png`}></img></a></div>
-            <button className="header-small-item unfold-button" onClick={this.handleClickDropdown}>MENU <FontAwesomeIcon className="arrow-icon" icon={faSortDown}/></button>
+            <button name="unfold-menu" className="header-small-item unfold-button" onClick={this.handleClickDropdown}>MENU <FontAwesomeIcon className="arrow-icon" icon={faSortDown}/></button>
             </div>
             
             <div className="header-container-small">
             <div className="header-logo header-small-item"><a  href="/"><img className="logo-image" src="./logo.png"></img></a></div>
-            <button className="header-item unfold-button" onClick={this.handleClickDropdown}><i className="fas fa-bars"></i> MENU</button>
+            <button name="unfold-menu" className="header-item unfold-button" onClick={this.handleClickDropdown}><i className="fas fa-bars"></i> MENU</button>
             <div className="search-input">
                     <form>
                         <div className="ui input icon" style={{width: "130px"}}>

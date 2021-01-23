@@ -7,13 +7,11 @@ const {Basket} = require('../models/basket');
 const {Status} = require('../models/status');
 const {Discount} = require('../models/discount');
 const templates = require('../emailTemplates/templates');
-const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const { getDate } = require('../js/index');
 const { generateOrderToken } = require('../controllers/auth')
 const { baseURL } = require('../config/index');
-
-
+const request = require('request');
+const { appKey, secretKey } = require('../config/index');
 
 
 getOrder = async (req, res) => {
@@ -216,6 +214,7 @@ getSingleOrder = async (req, res) => {
 addOrder = async (req, res) => {
     const { error } = validateOrder(req.body);
     if(error) { return res.status(400).send(error.details[0].message)};
+    const mail = req.body.customerIdentities.email;
 
 
     let currentNumber;
@@ -313,15 +312,9 @@ addOrder = async (req, res) => {
         status: status,
         discountActive: req.body.discountActive,
         discountUsed: req.body.discountUsed,
-        token: token.accessToken
+        token: token.accessToken,
+        dateAdded: Date.now()
         });
-
-    const msg = {
-        to: newOrder.customerIdentities.email,
-        from: 'kam237zasada@wp.pl',
-        subject: `Zamówienie o ID ${newOrder.ID} zostało złożone`,
-        html: templates.placedOrder({orderId: newOrder.ID, shipment: newOrder.shipment.name, payment: newOrder.payment.name, products: newOrder.products, value: newOrder.value, link: link})
-    }
 
 
     try {
@@ -333,13 +326,34 @@ addOrder = async (req, res) => {
         let basket = await Basket.findByIdAndDelete(req.body.basketId);
             if(!basket) { return res.status(400).send("Koszyk nie istnieje.")};
 
-        try {
-        await sgMail.send(msg);
-        } catch (err) {
-            console.log(err)
+            try {
+                await request.post({
+            url: 'https://api.emaillabs.net.pl/api/new_sendmail',
+            headers: {
+                'content-type' : 'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ' + new Buffer.from(`${appKey}:${secretKey}`).toString("base64")
+            },
+            form: {
+                to: {
+                    [mail]: ''
+                },
+                'subject': `Zamówienie o ID ${newOrder.ID} zostało złożone`,
+                'html':templates.placedOrder({orderId: newOrder.ID, shipment: newOrder.shipment.name, payment: newOrder.payment.name, products: newOrder.products, value: newOrder.value, link: link}),
+                'smtp_account': '1.torebkowamania.smtp',
+                'from': 'sklep@torebkowamania.pl'
+            }
+        },
+        function (error, response, body) {
+            console.log(body)
+        }
+        )
+        res.status(200).send("Wiadomość wysłana")
+        } catch(err) {
+        res.status(500).send("coś poszło nie tak");
         }
 
     } catch (error) { return res.status(500).send("Cos poszło nie tak") };
+    
 };
 
 updateOrderStatus = async (req,res) => {
@@ -350,13 +364,8 @@ updateOrderStatus = async (req,res) => {
     if(!status) { return res.status(400).send("Taki status nie istnieje.")}
 
     order.status = status;
+    const mail = order.customerIdentities.email;
     
-    const msg = {
-        to: order.customerIdentities.email,
-        from: 'kam237zasada@wp.pl',
-        subject: `Zmiana statusu Twojego zamówienia nr ${order.ID}`,
-        html: templates.statusChanged({status: status, orderId: order.ID })
-    }
 
     try {
         await order.save();
@@ -365,10 +374,30 @@ updateOrderStatus = async (req,res) => {
         })
 
         try {
-            await sgMail.send(msg);
-            } catch (err) {
-                console.log(err);
-            }
+            await request.post({
+        url: 'https://api.emaillabs.net.pl/api/new_sendmail',
+        headers: {
+            'content-type' : 'application/x-www-form-urlencoded',
+            'Authorization': 'Basic ' + new Buffer.from(`${appKey}:${secretKey}`).toString("base64")
+        },
+        form: {
+            to: {
+                [mail]: ''
+            },
+            'subject': `Zmiana statusu Twojego zamówienia nr ${order.ID}`,
+            'html':templates.statusChanged({status: status, orderId: order.ID }),
+            'smtp_account': '1.torebkowamania.smtp',
+            'from': 'sklep@torebkowamania.pl'
+        }
+    },
+    function (error, response, body) {
+        console.log(body)
+    }
+    )
+    res.status(200).send("Wiadomość wysłana")
+    } catch(err) {
+    res.status(500).send("coś poszło nie tak");
+    }
 
     } catch (err) {
         return res.status(500).send("Cos poszło nie tak")
@@ -406,7 +435,7 @@ updateMessages = async (req, res) => {
 
     try {
         await order.save();
-        res.send("Wiaodmość zapisana");
+        res.send("Wiadomość zapisana");
     } catch (err) {
         return res.status(400).send(err.response.data)
     }

@@ -313,7 +313,7 @@ class MyAccount extends React.Component {
                 </div>  
             </form>
         </div>
-        <div className="customer-panel-form ui form">
+        {/* <div className="customer-panel-form ui form">
                     <form id="invoiceIdentities">
                 <div className="customer-form-container"><div className="customer-form-header">Dane do faktury:</div>
                 <div className="field">
@@ -365,7 +365,7 @@ class MyAccount extends React.Component {
                 <button className="button-basket" form="invoiceIdentities" onClick={this.handleUpdateCompanyIdentities}>Zapisz</button>               
                 </div>  
             </form>
-        </div>
+        </div> */}
         </div>
         </div>
         )

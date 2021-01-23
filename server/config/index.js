@@ -1,8 +1,9 @@
 module.exports = {
     TOKEN_SECRET: process.env.SECRET_JWT,
-    baseURL:"https://szycietozycie.firebaseapp.com"
+    appKey : process.env.appKey,
+    secretKey: process.env.secretKey,
+    baseURL:"https://torebkowamania.pl"
 }
 
-// module.exports= { baseURL:"https://szycietozycie.firebaseapp.com" }
 
 

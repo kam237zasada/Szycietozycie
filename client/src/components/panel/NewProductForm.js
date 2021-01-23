@@ -92,7 +92,6 @@ class NewProductForm extends React.Component {
     handleChange = event => {
         switch (event.target.name) {
             case 'name':
-                console.log(event.target.value)
                this.setState({ name: event.target.value });
                 break;
             case 'category':
@@ -132,7 +131,6 @@ class NewProductForm extends React.Component {
                 let newPrice = price.replace(",", ".");
                 let priceLength = newPrice.length;
                 if (priceLength > 0) {
-                if (newPrice.charAt(newPrice.length-1) == ".") { newPrice = `${newPrice}00`; }
                 }
                 this.setState({ price: newPrice });
                 break;

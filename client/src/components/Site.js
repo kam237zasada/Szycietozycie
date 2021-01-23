@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getSite } from '../actions/index';
-import { getCookie, changeView } from '../js/index';
 import ShopMenu from './ShopMenu';
 
 

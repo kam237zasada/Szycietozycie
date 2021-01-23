@@ -136,88 +136,100 @@ class DiscountForm extends React.Component {
 
         if(this.state.isInfinite) {
             return (
-                <><input
+                <><div><input
                 type="radio"
                 name="limit"
                 limitvalue="isInfinite"
+                id="isInfinite"
                 onChange={this.handleChange}
-                checked/><label>Bez limitów</label>
-                <input
+                checked/><label for="isInfinite">Bez limitów</label></div>
+                <div><input
                 type="radio"
                 name="limit"
+                id="isSingleUse"
                 onChange={this.handleChange}
                 limitvalue="isSingleUse"
-                /><label>Można wykorzystać tylko raz</label>
-                <input
+                /><label for="isSingleUse">Można wykorzystać tylko raz</label></div>
+                <div><input
                 type="radio"
                 name="limit"
+                id="isSingleByUser"
                 onChange={this.handleChange}
                 limitvalue="isSingleByUser"
-                /><label>Każdy użytkownik może wykorzystać tylko raz</label></>
+                /><label for="isSingleByUser">Każdy użytkownik może wykorzystać tylko raz</label></div></>
             )
         } else if(this.state.isSingleUse) {
             return (
-                <><input
+                <><div><input
                 type="radio"
                 name="limit"
-                onChange={this.handleChange}
                 limitvalue="isInfinite"
-                /><label>Bez limitów</label>
-                <input
+                id="isInfinite"
+                onChange={this.handleChange}
+                /><label for="isInfinite">Bez limitów</label></div>
+                <div><input
                 type="radio"
                 name="limit"
+                id="isSingleUse"
                 onChange={this.handleChange}
                 limitvalue="isSingleUse"
-                checked/><label>Można wykorzystać tylko raz</label>
-                <input
+                checked/><label for="isSingleUse">Można wykorzystać tylko raz</label></div>
+                <div><input
                 type="radio"
                 name="limit"
+                id="isSingleByUser"
                 onChange={this.handleChange}
                 limitvalue="isSingleByUser"
-                /><label>Każdy użytkownik może wykorzystać tylko raz</label></>
+                /><label for="isSingleByUser">Każdy użytkownik może wykorzystać tylko raz</label></div></>
             )
         }
         else if(this.state.isSingleByUser) {
             return (
-                <><input
+                <><div><input
                 type="radio"
                 name="limit"
-                onChange={this.handleChange}
                 limitvalue="isInfinite"
-                /><label>Bez limitów</label>
-                <input
+                id="isInfinite"
+                onChange={this.handleChange}
+                /><label for="isInfinite">Bez limitów</label></div>
+                <div><input
                 type="radio"
                 name="limit"
+                id="isSingleUse"
                 onChange={this.handleChange}
                 limitvalue="isSingleUse"
-                /><label>Można wykorzystać tylko raz</label>
-                <input
+                /><label for="isSingleUse">Można wykorzystać tylko raz</label></div>
+                <div><input
                 type="radio"
                 name="limit"
+                id="isSingleByUser"
                 onChange={this.handleChange}
                 limitvalue="isSingleByUser"
-                checked/><label>Każdy użytkownik może wykorzystać tylko raz</label></>
+                checked/><label for="isSingleByUser">Każdy użytkownik może wykorzystać tylko raz</label></div></>
             )
         } else {
                 return (
-                    <><input
-                    type="radio"
-                    name="limit"
-                    onChange={this.handleChange}
-                    limitvalue="isInfinite"
-                    /><label>Bez limitów</label>
-                    <input
-                    type="radio"
-                    name="limit"
-                    onChange={this.handleChange}
-                    limitvalue="isSingleUse"
-                    /><label>Można wykorzystać tylko raz</label>
-                    <input
-                    type="radio"
-                    name="limit"
-                    onChange={this.handleChange}
-                    limitvalue="isSingleByUser"
-                    /><label>Każdy użytkownik może wykorzystać tylko raz</label></>
+                <><div><input
+                type="radio"
+                name="limit"
+                limitvalue="isInfinite"
+                id="isInfinite"
+                onChange={this.handleChange}
+                /><label for="isInfinite">Bez limitów</label></div>
+                <div><input
+                type="radio"
+                name="limit"
+                id="isSingleUse"
+                onChange={this.handleChange}
+                limitvalue="isSingleUse"
+                /><label for="isSingleUse">Można wykorzystać tylko raz</label></div>
+                <div><input
+                type="radio"
+                name="limit"
+                id="isSingleByUser"
+                onChange={this.handleChange}
+                limitvalue="isSingleByUser"
+                /><label for="isSingleByUser">Każdy użytkownik może wykorzystać tylko raz</label></div></>
                 )
         }
     }

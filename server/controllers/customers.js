@@ -1,9 +1,9 @@
 const bcrypt = require('bcrypt');
 const {Customer, validateCustomer, validateData, validateCustomerUpdate, validatePassword, validateCompanyIdentities} = require('../models/customer');
 const templates = require('../emailTemplates/templates');
-const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const { generateTokens } = require('../controllers/auth')
+const request = require('request');
+const { appKey, secretKey } = require('../config/index');
 
 getCustomers = async (req, res) => {
     let page = Number(req.params.page);
@@ -132,22 +132,43 @@ passwordReminder = async (req, res) => {
     if(!customer) { return res.status(400).send("Nie ma użytkownika o takim adresie email")};
 
     let tokens = generateTokens(req, customer);
+    const mail = customer.email;
 
 
     const msg = {
         to: req.body.email,
-        from: 'kam237zasada@wp.pl',
+        from: 'sklep@torebkowamania.pl',
         subject: `Przypomnienie hasła Torebkowa Mania`,
         html: templates.passwordReminder({login: customer.login, _id: customer._id, token: tokens.accessToken })
     }
 
     try {
-        await sgMail.send(msg);
-        } catch (err) {
-            return res.status(500).send("Coś poszło nie tak")
-        }
+        await request.post({
+    url: 'https://api.emaillabs.net.pl/api/new_sendmail',
+    headers: {
+        'content-type' : 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic ' + new Buffer.from(`${appKey}:${secretKey}`).toString("base64")
+    },
+    form: {
+        to: {
+            [mail]: ''
+        },
+        'subject': `Przypomnienie hasła Torebkowa Mania`,
+        'html':templates.passwordReminder({login: customer.login, _id: customer._id, token: tokens.accessToken }),
+        'smtp_account': '1.torebkowamania.smtp',
+        'from': 'sklep@torebkowamania.pl'
+    }
+},
+function (error, response, body) {
+    console.log(body)
+}
+)
+res.status(200).send("Wiadomość wysłana")
+} catch(err) {
+res.status(500).send("coś poszło nie tak");
+}
 
-    res.send("Wysłano wiadomość na podany adres email")
+    res.send("Wysłano wiadomość na podany adres email. Może potrwać kilka minut nim otrzymasz wiadomość. Sprawdź także w folderze SPAM. ")
 
 }
 

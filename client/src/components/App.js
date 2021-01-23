@@ -9,9 +9,16 @@ import PriceList from './PriceList';
 import Contact from './Contact';
 import AdminLoginPage from './panel/AdminLoginPage';
 import AdminHomePage from './panel/AdminHomePage';
+import CookieConsent from "react-cookie-consent";
+
 
 const App = () => {
     return (
+        <>
+        <CookieConsent
+                  buttonText="Akceptuję"
+                  hideOnAccept={true}
+                  expires={1}>Ta strona wykorzystuje pliki cookies do swojego działania, przeglądając stronę, zgadzasz się na ich używanie. Więcej informacji w Polityce prywatności.</CookieConsent>
         <Router>
             <Switch>
                <Route path="/" exact component={LandingPage}/>
@@ -24,6 +31,7 @@ const App = () => {
                <Route path="/admin/*" exact component={AdminHomePage}/>
             </Switch>
         </Router>
+        </>
     )
 }
 

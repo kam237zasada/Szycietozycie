@@ -4,12 +4,12 @@ import { baseURL } from '../api/index';
 const axios=require('axios');
 
 export const checkId = (id) => async dispatch => {
-    let response = await apis.post('admin/auth', {id});
+    let response = await apis.post('user/auth', {id});
     dispatch({type: 'CHECK_ID', payload: response.data });
 }
 
 export const getAdmin = (id, jwt) => async dispatch => {
-        let response = await apis.get(`admin/${id}`, {headers: {
+        let response = await apis.get(`user/${id}`, {headers: {
         token: jwt
     }});
     dispatch({type: 'GET_ADMIN', payload: response.data});
@@ -17,17 +17,17 @@ export const getAdmin = (id, jwt) => async dispatch => {
 }
 
 export const getAdmins = (jwt) => async dispatch => {
-    let response = await apis.get('admin', { headers: {token: jwt}});
+    let response = await apis.get('user', { headers: {token: jwt}});
     dispatch({type: 'GET_ADMINS', payload: response.data});
 }
 
 export const addAdmin = (email, name, password, confirmPassword, adminPassword, jwt) => async dispatch => {
-    let response = await apis.post('admin/register', {email, name, password, confirmPassword, adminPassword}, {headers: {token: jwt}});
+    let response = await apis.post('user/register', {email, name, password, confirmPassword, adminPassword}, {headers: {token: jwt}});
     dispatch({type: 'ADD_ADMIN', payload: response.data})}
 
 
 export const adminLogin = (email, password) => async dispatch => {
-    let response = await apis.post('admin/login', {email, password});
+    let response = await apis.post('user/login', {email, password});
     setCookie("jwt", response.data.accessToken, 1);
     setCookie("adminId", response.data._id, 1);
     dispatch({type: 'ADMIN_LOGIN', payload: response.data });
@@ -41,18 +41,18 @@ export const adminLogout = () => async dispatch => {
 }
 
 export const updateAdmin = (id, email, name, adminPassword, jwt) => async dispatch => {
-    let response = await apis.put(`admin/${id}`, {email, name, adminPassword},{headers: {token: jwt}});
+    let response = await apis.put(`user/${id}`, {email, name, adminPassword},{headers: {token: jwt}});
     dispatch({type: 'UPDATE_ADMIN', payload: response.data});
 }
 
 export const updateAdminPassword = (id, adminPassword, password, confirmPassword, jwt) => async dispatch => {
-    let response = await apis.put(`admin/${id}/password`, {adminPassword, password, confirmPassword}, {headers: {token: jwt}});
+    let response = await apis.put(`user/${id}/password`, {adminPassword, password, confirmPassword}, {headers: {token: jwt}});
     dispatch({type: 'UPDATE_ADMIN_PASSWORD', payload: response.data});
 }
 
 export const deleteAdmin = (id, password, jwt) => async dispatch => {
     console.log("jwt " + jwt)
-    let response = await apis.delete(`admin/${id}`, {headers: {token: jwt, password: password}});
+    let response = await apis.delete(`user/${id}`, {headers: {token: jwt, password: password}});
     dispatch({type: 'DELETE_ADMIN', payload: response.data});
 }
 

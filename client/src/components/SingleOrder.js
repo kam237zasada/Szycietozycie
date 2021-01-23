@@ -5,12 +5,13 @@ import { getCookie, changeView, getDate } from '../js/index';
 import ShopMenu from './ShopMenu';
 
 
-class MyOrders extends React.Component {
+class SingleOrder extends React.Component {
 
     constructor(props) {
         super(props)    
         this.state= {
             noOrders: '',
+            orders: [],
             order: [],
             orderID: '',
             showDetails: false
@@ -156,10 +157,10 @@ class MyOrders extends React.Component {
                                 </tr>
                             </table>
                         </div>
-                        <div className="order-details-invoice">
+                        {/* <div className="order-details-invoice">
                         <h5>Dane do faktury:</h5>
                         {order.invoiceIdentities.companyName!="" ? invoice : <div>Nie wybrano</div>}
-                        </div>
+                        </div> */}
                         <div className="order-details-products">
                         <h5>Zamawiane produkty:</h5>
                         <table>
@@ -225,4 +226,4 @@ const mapStateToProps = (state) => {
 export default connect(
     mapStateToProps,
     { getSingleOrder }
-    )(MyOrders);
+    )(SingleOrder);

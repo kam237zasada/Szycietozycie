@@ -28,8 +28,7 @@ const orderSchema = new mongoose.Schema({
         required: true
     },
     dateAdded: {
-        type: Number,
-        default: Date.now()
+        type: Number
     },
     shipment: {
         type: shipmentSchema,
@@ -95,6 +94,6 @@ function validateOrder(order) {
     return Joi.validate(order, schema)
 }
 
-exports.ordertSchema = orderSchema;
+exports.orderSchema = orderSchema;
 exports.Order = Order;
 exports.validateOrder = validateOrder;

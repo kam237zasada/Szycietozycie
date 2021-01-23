@@ -49,8 +49,7 @@ const Product = mongoose.model('Product', new mongoose.Schema({
         type: Array
     },
     dateAdded: {    
-        type: Number,
-        default: Date.now()
+        type: Number
     },
     variant: {
         type: Object,

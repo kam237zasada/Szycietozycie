@@ -5,7 +5,7 @@ const {Basket} = require('../models/basket');
 const {Variant} = require('../models/variant');
 const {Color} = require('../models/color');
 const { getDate } = require('../js/index');
-const { send } = require('@sendgrid/mail');
+const { baseURL } = require('../config');
 
 
 getProduct = async (req, res) => {
@@ -383,7 +383,8 @@ addProduct = async (req, res, next) => {
         ID: currentNumber,
         tags: req.body.tags,
         alternatives: req.body.alternatives,
-        variant: variant
+        variant: variant,
+        dateAdded: Date.now()
     });
     try {
         await newProduct.save();
@@ -541,9 +542,9 @@ addView = async (req, res) => {
 fileUpload = async (req, res) => {
     const file = req.file;
 
+    res.json({filePath: `https://mysterious-river-61775.herokuapp.com/product/` + file.path})}
 
-    res.json({filePath: "https://mysterious-river-61775.herokuapp.com/product/" + file.path})}
-    // res.json({filePath: "http://localhost:3000/product/" + file.path})}
+    // res.json({filePath: `${baseURL}/product/` + file.path})}
 
 
 module.exports = {addView, getProduct, getAllProducts, getProducts, getProductsByCategory, getProductsByQuery, getProductsByFilters, getPopularProducts, sortProducts, addProduct, updateProduct, updatePrice, updateStock, deleteProduct, fileUpload};

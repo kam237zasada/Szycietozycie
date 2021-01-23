@@ -32,8 +32,8 @@ const adminSchema = new mongoose.Schema({
         type: Number
     },
     dateCreated: {
-        type: Date,
-        default: Date.now
+        type: Number,
+        default: Date.now()
     }
 })
 

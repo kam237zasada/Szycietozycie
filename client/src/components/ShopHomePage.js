@@ -51,6 +51,17 @@ componentDidMount = async () => {
 
         if(this.props.match.params.query) {
             
+
+            let head = document.getElementsByTagName("head");
+        let title = document.getElementsByTagName("title");
+        console.log(title[0].innerHTML)
+        title[0].innerHTML = `Wyniki wyszukiwania dla ${this.props.match.params.query}`;
+        console.log(title[0].innerHTML)
+        let description = document.createElement("meta");
+        description.setAttribute("name", "description");
+        description.setAttribute("content", "Sklep internetowy");
+        head[0].appendChild(description)
+            
             await this.props.getProductsByQuery(this.props.match.params.query, priceA, priceB, sort, page)
             if(priceA!=0 && priceA) { this.setState({priceA: priceA})}
             if(priceB!=0 && priceB) { this.setState({priceB: priceB})}

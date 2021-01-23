@@ -1,6 +1,6 @@
 require('dotenv').config({path: '.env'});
+const DBConnection = process.env.mongo;
 const express = require('express');
-const multer = require('multer');
 const mongoose = require('mongoose');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
@@ -22,25 +22,27 @@ const variants = require('./routes/variants');
 const discounts = require('./routes/discounts');
 const sites = require('./routes/sites');
 
-const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Listening on port ${port}...`))
 app.use('/product/uploads', express.static('./uploads'));
+app.use(require('prerender-node').set('prerenderToken', 'SfvBbtKiFwykFd02xnau'));
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(bodyParser.json());
 
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Listening on port ${port}...`))
+app.use('/product/uploads', express.static('./uploads'));
 
-mongoose.connect('mongodb+srv://kam237zasada:kam237zasada@cluster0-ylby9.mongodb.net/test?retryWrites=true&w=majority', { useFindAndModify: false, useNewUrlParser: true,useUnifiedTopology: true })
+
+    mongoose.connect(DBConnection, { useFindAndModify: false, useNewUrlParser: true,useUnifiedTopology: true })
     .then (() => console.log("Connected.."))
     .catch (err => console.error(err));
 
+
 app.use(express.json());
-app.use('/admin', admins);
+app.use('/user', admins);
 app.use('/product', products);
 app.use('/category', categories);
 app.use('/customer', customers);
@@ -54,6 +56,8 @@ app.use('/color', colors);
 app.use('/variant', variants);
 app.use('/discount', discounts);
 app.use('/site', sites);
+
+
 
 
 

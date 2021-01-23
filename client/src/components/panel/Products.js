@@ -19,6 +19,7 @@ class Products extends React.Component {
             currentPage: 1,
             categories: [],
             categoryFilter: '',
+            sortFilter:'-dateAdded',
             sort:'',
             priceA: '',
             priceB: '',
@@ -257,6 +258,7 @@ class Products extends React.Component {
     handleSort = async e => {
         e.preventDefault();
         const {active, query, priceA, priceB, categoryId } = this.props.match.params;
+        console.log(active)
         if(active) {
             if(categoryId && query) {
                 window.location.replace(`${window.location.origin}/admin/products/filter/${active}/search=${query}/category=${categoryId}/pricefrom=${priceA}/priceto=${priceB}/sort=${this.state.sortFilter}`)
@@ -264,6 +266,8 @@ class Products extends React.Component {
                 window.location.replace(`${window.location.origin}/admin/products/filter/${active}/category=${categoryId}/pricefrom=${priceA}/priceto=${priceB}/sort=${this.state.sortFilter}`)
             } else if(query) {
                 window.location.replace(`${window.location.origin}/admin/products/filter/${active}/search=${query}/sort=${this.state.sortFilter}`)
+            } else {
+                window.location.replace(`${window.location.origin}/admin/products/filter/active/sort=${this.state.sortFilter}`)
             }
         } else {
             window.location.replace(`${window.location.origin}/admin/products/filter/active/sort=${this.state.sortFilter}`)
@@ -345,7 +349,7 @@ class Products extends React.Component {
             ]
             return array.map(element => {
                 if(this.props.match.params.sortValue == element.value) {
-                    return <option value={element.value} selected>{element.text}</option>
+                    return <option value={element.value} defaultValue>{element.text}</option>
                 } else {
                     return <option value={element.value}>{element.text}</option>
                 }

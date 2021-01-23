@@ -5,7 +5,7 @@ const { accessTokenVerify } = require('../controllers/auth')
 
 router.get('/', accessTokenVerify, adminController.getAdmins);
 router.get('/:id', accessTokenVerify, adminController.getAdmin);
-router.post('/register', accessTokenVerify, adminController.addAdmin);
+router.post('/register', adminController.addAdmin);
 router.post('/login', adminController.loginAdmin);
 router.put('/:id', accessTokenVerify, adminController.updateAdmin);
 router.put('/:id/password', accessTokenVerify, adminController.updatePassword);

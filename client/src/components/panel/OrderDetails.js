@@ -92,7 +92,7 @@ class OrderDetails extends React.Component {
                 color="Kolor: " + product.color
             }
             if(product.variantValue!=='') {
-                color= product.variantName + ": " + product.variantValue
+                variant= product.variantName + ": " + product.variantValue
             }
 
             return (

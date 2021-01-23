@@ -1,7 +1,5 @@
 import React from 'react';
 import ProfileMenu from './ProfileMenu';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import { faUserCircle} from '@fortawesome/free-solid-svg-icons';
 
 function Profile({customer}){
 
