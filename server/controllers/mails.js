@@ -18,8 +18,8 @@ orderMessage = async (req, res) => {
             },
             'subject': `Numer listu dla Twojego zamówienia nr ${req.body.data.orderId}`,
             'html':templates.orderMessage({waybill: req.body.data.waybill, shipmentCompany: req.body.data.shipmentCompany, message: req.body.data.message}),
-            'smtp_account': '1.torebkowamania.smtp',
-            'from': 'sklep@torebkowamania.pl'
+            'smtp_account': '1.kam237zasada.smtp',
+            'from': 'kam237zasada@wp.pl'
         }
     },
     function (error, response, body) {
@@ -49,8 +49,8 @@ productQuestion = async (req, res) => {
         },
         'subject': `Nowe pytanie o produkt ${req.body.data.productName}`,
         'html':templates.productQuestion({message: req.body.data.message, link: req.body.data.link, email: req.body.email, productName: req.body.data.productName}),
-        'smtp_account': '1.torebkowamania.smtp',
-        'from': 'sklep@torebkowamania.pl',
+        'smtp_account': '1.kam237zasada.smtp',
+        'from': 'kam237zasada@wp.pl',
         'reply_to': req.body.email
 
     }
