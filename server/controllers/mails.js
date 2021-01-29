@@ -45,7 +45,7 @@ productQuestion = async (req, res) => {
     },
     form: {
         to: {
-            'sklep@torebkowamania.pl': ''
+            'kam237zasada@wp.pl': ''
         },
         'subject': `Nowe pytanie o produkt ${req.body.data.productName}`,
         'html':templates.productQuestion({message: req.body.data.message, link: req.body.data.link, email: req.body.email, productName: req.body.data.productName}),

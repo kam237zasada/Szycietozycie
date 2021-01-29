@@ -135,13 +135,6 @@ passwordReminder = async (req, res) => {
     const mail = customer.email;
 
 
-    const msg = {
-        to: req.body.email,
-        from: 'sklep@torebkowamania.pl',
-        subject: `Przypomnienie hasła Torebkowa Mania`,
-        html: templates.passwordReminder({login: customer.login, _id: customer._id, token: tokens.accessToken })
-    }
-
     try {
         await request.post({
     url: 'https://api.emaillabs.net.pl/api/new_sendmail',
@@ -153,10 +146,10 @@ passwordReminder = async (req, res) => {
         to: {
             [mail]: ''
         },
-        'subject': `Przypomnienie hasła Torebkowa Mania`,
+        'subject': `Przypomnienie hasła Szycie to życie`,
         'html':templates.passwordReminder({login: customer.login, _id: customer._id, token: tokens.accessToken }),
-        'smtp_account': '1.torebkowamania.smtp',
-        'from': 'sklep@torebkowamania.pl'
+        'smtp_account': '1.kam237zasada.smtp',
+        'from': 'sklep@przykladowymail.pl'
     }
 },
 function (error, response, body) {

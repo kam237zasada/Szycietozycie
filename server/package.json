@@ -15,9 +15,8 @@
   "bugs": {
     "url": "https://github.com/kam237zasada/Szycietozycie/issues"
   },
-  "homepage": "https://github.com/kam237zasada/Szycietozycie#readme",
+  "homepage": "https://szycietozycie.firebaseapp.com/",
   "dependencies": {
-    "@sendgrid/mail": "^7.1.1",
     "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -30,13 +29,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.4",
     "multer": "^1.4.2",
-    "nodemon": "^2.0.2",
+    "nodemon": "^2.0.7",
     "prerender-node": "^3.2.5",
-    "pug": "^3.0.0",
-    "react-redux": "^7.2.0",
-    "redux": "^4.0.5",
-    "redux-devtools-extension": "^2.13.8",
-    "redux-thunk": "^2.3.0",
     "request": "^2.88.2"
   }
 }

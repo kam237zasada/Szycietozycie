@@ -3,9 +3,7 @@ const {Product, validateProduct} = require('../models/product');
 const {Category} = require('../models/category');
 const {Basket} = require('../models/basket');
 const {Variant} = require('../models/variant');
-const {Color} = require('../models/color');
-const { getDate } = require('../js/index');
-const { baseURL } = require('../config');
+const { serverURL } = require('../config/index');
 
 
 getProduct = async (req, res) => {
@@ -542,7 +540,7 @@ addView = async (req, res) => {
 fileUpload = async (req, res) => {
     const file = req.file;
 
-    res.json({filePath: `https://mysterious-river-61775.herokuapp.com/product/` + file.path})}
+    res.json({filePath: `${serverURL}/product/` + file.path})}
 
     // res.json({filePath: `${baseURL}/product/` + file.path})}
 

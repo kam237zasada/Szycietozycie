@@ -339,8 +339,8 @@ addOrder = async (req, res) => {
                 },
                 'subject': `Zamówienie o ID ${newOrder.ID} zostało złożone`,
                 'html':templates.placedOrder({orderId: newOrder.ID, shipment: newOrder.shipment.name, payment: newOrder.payment.name, products: newOrder.products, value: newOrder.value, link: link}),
-                'smtp_account': '1.torebkowamania.smtp',
-                'from': 'sklep@torebkowamania.pl'
+                'smtp_account': '1.kam237zasada.smtp',
+                'from': 'sklep@przykladowymail.pl'
             }
         },
         function (error, response, body) {
@@ -386,12 +386,11 @@ updateOrderStatus = async (req,res) => {
             },
             'subject': `Zmiana statusu Twojego zamówienia nr ${order.ID}`,
             'html':templates.statusChanged({status: status, orderId: order.ID }),
-            'smtp_account': '1.torebkowamania.smtp',
-            'from': 'sklep@torebkowamania.pl'
+            'smtp_account': '1.kam237zasada.smtp',
+            'from': 'sklep@przykladowymail.pl'
         }
     },
     function (error, response, body) {
-        console.log(body)
     }
     )
     res.status(200).send("Wiadomość wysłana")

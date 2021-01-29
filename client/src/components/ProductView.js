@@ -64,7 +64,7 @@ class ProductView extends React.Component {
         this.setState({variant: this.props.product.variant})
         this.setState({tags: this.props.product.tags.toString()});
         this.setState({shortDescription: this.props.product.shortDescription});
-        if(this.state.shortDecsription=='') { this.setState({shortDesccription: "Torebkowa Mania, modne torebki damskie, torebki z ekoskóry, worki, organizery."})}
+        if(this.state.shortDecsription=='') { this.setState({shortDesccription: "Szycie to życie, modne torebki damskie, torebki z ekoskóry, worki, organizery."})}
         if(this.state.numberInStock > 0) {this.setState({available: true})}
         let head = document.getElementsByTagName("head");
         let keywords = document.createElement("meta");

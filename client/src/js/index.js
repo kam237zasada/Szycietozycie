@@ -62,6 +62,7 @@ export function countProducts(products) {
 }
 
 export function changeLocation(location) {
+  if(location.charAt(location.length-1==='/')) { location = location.slice(0, location.length-1)}
   let index = location.lastIndexOf("/");
   let newLocation = location.slice(0,index);
   return newLocation

@@ -944,7 +944,7 @@ class BasketView extends React.Component {
                 className="checkbox"
                 name="privacyPolicy"
                 onChange={this.handleChange}
-                /> <b>*</b> Oświadczam, że zapoznałem się z polityką prywatności sklepu "Torebkowa Mania".</label>
+                /> <b>*</b> Oświadczam, że zapoznałem się z polityką prywatności sklepu "Szycie To Życie".</label>
                 <div className="basket-action">
                 
                 <a href="#basket"><button onClick={this.handleBack} name="backToBasket" className="button-basket">WRÓĆ</button></a>

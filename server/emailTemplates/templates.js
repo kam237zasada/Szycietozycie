@@ -1,3 +1,5 @@
+const { baseURL } = require ('../config/index')
+
 exports.placedOrder = (data) => {
 
     return `<p><strong>Gratulacje! Właśnie złożyłeś zamówienie w sklepie Szycie to życie!</strong></p>
@@ -79,7 +81,7 @@ exports.productQuestion = (data) => {
 
 exports.passwordReminder = (data) => {
     return `<p>Cześć ${data.login}! Kliknij w poniższy link aby zresetować hasło do Twojego konta na sklepie Szycie to Życie!</p><br />
-    <a href=http://torebkowamania.pl/sklep/password/new/customer/${data._id}/${data.token}>http://localhost:8000/sklep/password/new/customer/${data._id}/${data.token}</a><br />
+    <a href="${baseURL}sklep/password/new/customer/${data._id}/${data.token}">${baseURL}/sklep/password/new/customer/${data._id}/${data.token}</a><br />
     <p>Link z mozliwością zmiany hasła jest aktywny przez jedną godzinę.</p>
     <p>Jeżeli to nie Ty, to zignoruj tę wiadomość.</p><br />
     <p>Pozdrawiamy</p><br />

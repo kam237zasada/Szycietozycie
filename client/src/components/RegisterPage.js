@@ -117,7 +117,7 @@ class RegisterPage extends React.Component {
                 className="checkbox"
                 name="privacyPolicy"
                 onChange={this.handleChange}
-                /> <b>*</b> Oświadczam, że zapoznałem się z polityką prywatności sklepu "Torebkowa Mania".</label>
+                /> <b>*</b> Oświadczam, że zapoznałem się z polityką prywatności sklepu "Szycie to Życie".</label>
                     </div>  
                     <button className="button-basket" form="customerRegister" onClick={this.handleSubmit}>Zarejestruj!</button>   
                     <span style={{color: 'red'}}>{this.state.error}</span>

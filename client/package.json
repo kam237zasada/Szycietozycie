@@ -35,8 +35,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "sitemap": "babel-node src/sitemap-generator.js",
-    "postbuild": "react-snap"
+    "sitemap": "babel-node src/sitemap-generator.js"
+
   },
   "eslintConfig": {
     "extends": "react-app"
