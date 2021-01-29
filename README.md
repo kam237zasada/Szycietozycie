@@ -48,7 +48,7 @@ To launch app on your local computer, you have to execute undermentioned steps^^
 8. Run server on localhost:3000 -> ``$ node index.js``
 
 ^ Here you have credentials for example existing user:
-``login: player123``
+``login: krulikos``
 ``password: password123``<br>
 ^^ If you want to sign as Admin, to see how looks from Admin's point of view, don't wait and just write to me.<br>
 ^^^ Some features would not be working because of environment variables which have to be hide. If you want to see full performance of application see <a href='https://szycietozycie.firebaseapp.com'>DEMO</a>. 
