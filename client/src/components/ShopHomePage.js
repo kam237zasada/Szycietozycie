@@ -54,9 +54,7 @@ componentDidMount = async () => {
 
             let head = document.getElementsByTagName("head");
         let title = document.getElementsByTagName("title");
-        console.log(title[0].innerHTML)
         title[0].innerHTML = `Wyniki wyszukiwania dla ${this.props.match.params.query}`;
-        console.log(title[0].innerHTML)
         let description = document.createElement("meta");
         description.setAttribute("name", "description");
         description.setAttribute("content", "Sklep internetowy");

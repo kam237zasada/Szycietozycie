@@ -1,12 +1,9 @@
 import React from 'react';
-import ShopMenu from './ShopMenu';
 import {getBasket, updateBasket, deleteBasket, getShipments, getPayments, addOrder, getCustomer, fetchPaczkomatByCity, fetchPaczkomatByPostCode, checkDiscount} from '../actions';
 import { connect } from 'react-redux';
 import {changeView, changeString, deleteCookie, getCookie, countProducts, setCookie} from '../js/index';
-import { Redirect } from 'react-router-dom';
 import { RenderShipments } from './RenderShipments.js';
 import { RenderPayments } from './RenderPayments.js';
-import { faJournalWhills, faIgloo } from '@fortawesome/free-solid-svg-icons';
 import { baseURL } from '../api/index'
 
 
@@ -82,9 +79,7 @@ class BasketView extends React.Component {
 
     countOrderCost() {
 
-        let cost = this.state.cost;
-        console.log(cost)
-        
+        let cost = this.state.cost;        
         let orderCost = cost + this.state.shipmentCost;
 
         let orderRound = Number(Math.round(orderCost + 'e+2') + 'e-2')
@@ -217,14 +212,11 @@ class BasketView extends React.Component {
         let color = array[0];
         let variantName = array[1];
         let variantValue = array[2];
-        console.log("click")
         let isError = document.getElementById("errorSpan");
         if(isError) {
-            console.log(isError);
             isError.remove();
         }
         await this.props.updateBasket(this.state.basketId, e.target.id, "all", "deletion", color, variantName, variantValue);
-        console.log(this.props.basket)
         this.setState({insertionError:''})
         this.setState({renderSite: true});
     }
@@ -248,17 +240,7 @@ class BasketView extends React.Component {
         this.setState({shipmentError: ''})
         this.setState({shipmentName: selectedShipment.name});
         this.setState({shipmentId: selectedShipment._id})
-        // if(this.state.selectedShipment!=null && this.state.selectedPayment!=null) {
-        //     let cost=0;
-        //     for(let i =0;i<selectedShipment.payments.length;i++) {
-        //         if(selectedShipment.payments[i]._id===this.state.selectedPayment._id) {
-        //             console.log("abc "+ selectedShipment.payments[i].name)
-        //             cost = Number(this.state.selectedShipment.payments[i].additionalCost);
-        //             console.log(cost)
-        //         }
-        //     }
-        // this.setState({shipmentCost: this.state.selectedShipment.price + cost})
-        // }
+        
         this.setState({selectedPayment: null})
         let overallCost = this.state.cost + this.state.shipmentCost;
         let costRound = await Number(Math.round(overallCost + 'e+2') + 'e-2')
@@ -325,7 +307,6 @@ class BasketView extends React.Component {
                 {this.renderOptions()}
             </select>
         } else {
-            console.log("mniej niz 5")
             return this.state.fetchedPaczkomat.map(paczkomat => {
                 return <div><input description={paczkomat.location_description} address={paczkomat.address.line1} postCode={paczkomat.address.line2} onChange={this.handleChange} type="radio" name="choosePaczkomat" id={paczkomat.name} value={paczkomat.name}/><label>{paczkomat.name}, {paczkomat.address.line1}, {paczkomat.address.line2}</label></div>
             })
@@ -523,7 +504,6 @@ class BasketView extends React.Component {
         try {
             await this.props.addOrder(customerIdentities, shipmentIdentities, invoiceIdentities, customer, this.state.products, this.state.shipmentId, this.state.shipmentCost, this.state.paymentId, this.state.cost, this.state.comment, this.state.discountActive, this.state.discountUsed )
         } catch (err) {
-            console.log(err)
             return this.setState({orderError: err.response.data})
         }
         window.location.replace(`${window.location.origin}/sklep/o/order_summary`);
@@ -587,7 +567,6 @@ class BasketView extends React.Component {
                 this.setState({paczkomatCity: event.target.value});
                 break;
             case 'choosePaczkomat':
-                console.log(event.target)
                 let x = {
                     description: event.target.attributes.description.value,
                     address: event.target.attributes.address.value,
@@ -916,15 +895,14 @@ class BasketView extends React.Component {
                     value="differentAddress"/>
                     <label for="differentAddress"> Inny adres dostawy</label></> }
                     <br/>
-                    {/* <input 
+                    <input 
                     className="checkbox"
                     type="checkbox" 
                     id="invoice" 
                     name="invoice" 
                     onChange={this.handleInvoice} 
                     value="invoice"/>
-                    <label for="invoice"> Chcę fakturę</label> */}
-                    {/* Checkbox dla faktury */}
+                    <label for="invoice"> Chcę fakturę</label>
                 </form>
             </div>
             {this.state.differentAddress ? differentAddress : null}
@@ -1043,9 +1021,9 @@ class BasketView extends React.Component {
                 </div>
                 {this.state.differentAddress || this.state.showPaczkomaty ? showDifferentAddress : noDifferentAddress}
                 {this.state.invoice ? showInvoice : <div className="summary-identities-child">
-                    {/* <h2>Faktura</h2>
+                    <h2>Faktura</h2>
 
-                    <div>Nie wybrano</div> */}
+                    <div>Nie wybrano</div>
                     
                     </div>}
             </div>
@@ -1149,7 +1127,6 @@ class BasketView extends React.Component {
 
         return (
             <div id="shop-content" className="shop-content">
-                {/* <ShopMenu/> */}
                 {this.state.loaded ? isEmpty : loading}
                 <section id="order-identities">
                 {this.state.orderClicked ? showForm : null}

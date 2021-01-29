@@ -83,13 +83,13 @@ class NewProductForm extends React.Component {
             this.setState({update: true})
         }
         this.setState({loaded: true})
-        console.log(this.state.dateAdded)
         await this.renderColors();
         await this.checkColors();
 
         
     }
     handleChange = event => {
+        this.setState({error: ''})
         switch (event.target.name) {
             case 'name':
                this.setState({ name: event.target.value });
@@ -139,7 +139,6 @@ class NewProductForm extends React.Component {
                 break;
             case 'shortDescription':
                 this.setState({shortDescription: event.target.value});
-                console.log(event.target)
                 this.setState({charLeft: 150-event.target.textLength })
                 break;
             case 'productImage':
@@ -247,7 +246,7 @@ class NewProductForm extends React.Component {
 
         } catch (err) {
             if(err.response.status === 500) {
-                console.log('Pojawił się problem z serwerem')
+                this.setState({error: 'Pojawił się problem z serwerem'})
             }
         }
     }

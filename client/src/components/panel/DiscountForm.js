@@ -67,7 +67,6 @@ class DiscountForm extends React.Component {
                     this.setState({isInfinite: true})
                         this.setState({isSingleUse: false})
                         this.setState({isSingleByUser: false})
-                        console.log("abc")
                         el.removeAttribute("disabled");
                 } else if(event.target.attributes.limitvalue.value==="isSingleUse") {
                     this.setState({isInfinite: false})

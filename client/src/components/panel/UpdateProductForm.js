@@ -75,6 +75,7 @@ class UpdateProductForm extends React.Component {
     }
 
     handleChange = async event => {
+        this.setState({error: ''})
         switch (event.target.name) {
             case 'name':
                this.setState({ name: event.target.value });
@@ -151,7 +152,7 @@ class UpdateProductForm extends React.Component {
 
         } catch (err) {
             if(err.response.status === 500) {
-                console.log('Pojawił się problem z serwerem')
+                this.setState({error: 'Pojawił się problem z serwerem'})
             }
         }
     }

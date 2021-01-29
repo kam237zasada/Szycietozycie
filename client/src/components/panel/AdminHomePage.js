@@ -19,7 +19,7 @@ class AdminHomePage extends React.Component {
         let id = getCookie('adminId');
         const jwt = getCookie('jwt');
         try {
-        await this.props.getAdmin(id, jwt)
+            await this.props.getAdmin(id, jwt)
         if(this.props.name) {
             this.setState({isLogged: true})
         }

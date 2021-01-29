@@ -13,7 +13,6 @@ router.get('/:id', accessTokenVerify, orderController.getOrder);
 router.get('/customer/:id', accessTokenVerifyCustomer, orderController.getOrdersByClient);
 router.post('/add', orderController.addOrder);
 router.put('/:id/status', accessTokenVerify, orderController.updateOrderStatus);
-router.put('/:id', accessTokenVerify, orderController.updateOrder);
 router.put('/privcmnt/:id', accessTokenVerify, orderController.updatePrivateComment)
 router.put('/messages/:id', accessTokenVerify, orderController.updateMessages);
 

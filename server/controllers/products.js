@@ -542,7 +542,6 @@ fileUpload = async (req, res) => {
 
     res.json({filePath: `${serverURL}/product/` + file.path})}
 
-    // res.json({filePath: `${baseURL}/product/` + file.path})}
 
 
 module.exports = {addView, getProduct, getAllProducts, getProducts, getProductsByCategory, getProductsByQuery, getProductsByFilters, getPopularProducts, sortProducts, addProduct, updateProduct, updatePrice, updateStock, deleteProduct, fileUpload};

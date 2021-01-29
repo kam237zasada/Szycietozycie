@@ -20,7 +20,6 @@ class UpdatePaymentForm extends React.Component {
         await this.props.getPayment(this.props.match.params.id);
         this.setState({name: this.props.payment.name})
         this.setState({_id: this.props.payment._id})
-        console.log("state " + this.props.match.params.id)
     }
     handleChange = event => {
         switch (event.target.name) {

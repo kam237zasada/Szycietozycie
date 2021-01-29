@@ -51,7 +51,6 @@ export const updateAdminPassword = (id, adminPassword, password, confirmPassword
 }
 
 export const deleteAdmin = (id, password, jwt) => async dispatch => {
-    console.log("jwt " + jwt)
     let response = await apis.delete(`user/${id}`, {headers: {token: jwt, password: password}});
     dispatch({type: 'DELETE_ADMIN', payload: response.data});
 }
@@ -452,7 +451,6 @@ export const deleteVariant = (id, ID, jwt) => async dispatch => {
 
 export const fetchPaczkomatByPostCode = (postCode) => async dispatch => {
     let response = await axios.get(`https://api-shipx-pl.easypack24.net/v1/points?relative_post_code=${postCode}&type=parcel_locker&limit=5`);
-    console.log(response.data)
     dispatch({type: 'GET_PACZKOMATY', payload: response.data.items});
 }
 
@@ -479,7 +477,6 @@ export const getDiscount = (id, jwt) => async dispatch => {
 }
 
 export const checkDiscount = (code, customerId) => async dispatch => {
-    console.log(customerId)
     let response = await apis.post(`discount/check/${code}`, {customerId});
     dispatch({type: 'GET_DISCOUNT', payload: response.data});
 }

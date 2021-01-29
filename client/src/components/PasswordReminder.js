@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { passwordReminder } from '../actions';
-import { Redirect } from 'react-router-dom';
 import ShopMenu from './ShopMenu';
-import { baseURL } from '../api/index'
 
 class PasswordReminder  extends React.Component {
     constructor(props) {

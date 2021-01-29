@@ -42,10 +42,6 @@ addBasket = async (req, res) => {
         price: product.price,
         ID: product.ID
     })
-    // const { error } = validateBasket({);
-    // if (error) {
-    //     return res.status(400).send(error.details[0].message);
-    // };
     let cost = products[0].price* products[0].amount;
     
     const newBasket = new Basket({
@@ -105,10 +101,6 @@ updateBasket = async (req, res) => {
     });
 }
     
-    // for (let i=0; i < products.length; i++) {
-    //     sum = products[i].price * products[i].amount;
-    //     cost = cost + sum;
-    // }
 }
 
     if (req.body.operation==="deletion") {

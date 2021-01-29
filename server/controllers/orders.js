@@ -344,7 +344,6 @@ addOrder = async (req, res) => {
             }
         },
         function (error, response, body) {
-            console.log(body)
         }
         )
         res.status(200).send("Wiadomość wysłana")
@@ -442,47 +441,6 @@ updateMessages = async (req, res) => {
 
 }
 
-updateOrder = async (req, res) => {
-    // const product = await Product.findById(req.params.id);
-    // if(!product) { return res.status(400).send("Taki produkt nie istnieje."); };
-
-    // let findCode = await Product.findOne({productCode: req.body.productCode});
-
-    // if(findCode && findCode._id != req.params.id) {
-    //     return res.status(400).send('Produkt o takim kodzie juz istnieje, podaj inny kod produktu.');
-    // }
-    
-
-    // if(error) { return res.status(400).send(error.details[0].message)};
-    // let price = req.body.price;
-    // let z = price.toString();
-
-    // let x = z.indexOf(".");
-    //             let string = z.substr(x)
-    //             if (string.length > 3)
-    //             { return res.status(400).send("Błędny format ceny")};
-    // product.set({
-    //     name: req.body.name,
-    //     category: {
-    //         name: category.name,
-    //         _id: category._id,
-    //         ID: category.ID
-    //     },
-    //     color: req.body.color,
-    //     description: req.body.description,
-    //     productCode: req.body.productCode,
-    //     price: req.body.price,
-    //     numberInStock: req.body.numberInStock,
-    //     productImage: req.body.productImage
-
-    // });
-    // try {
-    //     await product.save();
-    //     res.send({
-    //         product,
-    //         message: "Produkt poprawnie zauktualizowany."});
-    // } catch (error) { res.status(400).send(error); }
-};
 
 module.exports = {
     getOrder, 
@@ -494,7 +452,6 @@ module.exports = {
     getOrders, 
     addOrder, 
     updateOrderStatus, 
-    updateOrder, 
     updatePrivateComment, 
     updateMessages,
     getSingleOrder

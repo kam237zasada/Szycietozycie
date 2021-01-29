@@ -21,7 +21,6 @@ class RegisterPage extends React.Component {
 
     handleSubmit = async e => {
         e.preventDefault();
-        console.log("abb")
         this.setState({error: ''})
         const { login, email, password, confirmPassword, privacyPolicy, regAccept } = this.state;
         if(!privacyPolicy || !regAccept) {

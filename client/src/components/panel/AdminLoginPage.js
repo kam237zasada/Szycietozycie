@@ -31,7 +31,6 @@ class AdminLoginPage extends React.Component {
         await this.props.adminLogin(email, password);
         this.setState({logged: true});
         } catch (err) {
-            console.log(err.response.data);
             this.setState({error: err.response.data})
         }
     }

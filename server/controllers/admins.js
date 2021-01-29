@@ -1,9 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { TOKEN_SECRET } = require('../config/index')
 const {Admin, validateAdmin, validatePassword, validateUpdate} = require('../models/admin');
 const { generateTokens } = require('../controllers/auth')
-// const { verifyAccessToken } = require('../controllers/auth')
 
 
 getAdmins = async (req, res) => {

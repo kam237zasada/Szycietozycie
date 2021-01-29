@@ -95,7 +95,6 @@ class ProductView extends React.Component {
                 break;
             case 'color':
                 this.setState({color: event.target.value});
-                console.log(this.state.color)
                 break;
             case 'variant':
                 this.setState({variantValue: event.target.value});

@@ -122,7 +122,6 @@ class NewShipmentForm extends React.Component {
                 }
             }
             if(check) {
-                console.log(this.state.checkedPayments)
                 let x = this.state.checkedPayments;
                 let cost;
                 for(let i=0; i<x.length;i++) {

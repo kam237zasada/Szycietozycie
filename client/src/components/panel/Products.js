@@ -258,7 +258,6 @@ class Products extends React.Component {
     handleSort = async e => {
         e.preventDefault();
         const {active, query, priceA, priceB, categoryId } = this.props.match.params;
-        console.log(active)
         if(active) {
             if(categoryId && query) {
                 window.location.replace(`${window.location.origin}/admin/products/filter/${active}/search=${query}/category=${categoryId}/pricefrom=${priceA}/priceto=${priceB}/sort=${this.state.sortFilter}`)

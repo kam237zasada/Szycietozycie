@@ -153,7 +153,6 @@ passwordReminder = async (req, res) => {
     }
 },
 function (error, response, body) {
-    console.log(body)
 }
 )
 res.status(200).send("Wiadomość wysłana")
