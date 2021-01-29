@@ -93,4 +93,8 @@ To launch app on your local computer, you have to execute undermentioned steps^^
 
 * Font-Awesome
 * Semantic-UI
+* *https://www.pexels.com/pl-pl/*
+* *https://pixabay.com/pl/*
+
+NOTICE: I do not own any photos of example products. There are not for commercial use or for sale. Photos included in application are only for show it performance.
 
