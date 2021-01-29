@@ -96,5 +96,5 @@ To launch app on your local computer, you have to execute undermentioned steps^^
 * *https://www.pexels.com/pl-pl/*
 * *https://pixabay.com/pl/*
 
-NOTICE: I do not own any photos of example products. These photos are not for commercial use or for sale. Photos included in application are only for show it performance.
+NOTICE: I do not own any photos of example products. These photos are not for commercial use or for sale. Photos included in application are only for show performance of application. You cannot buy anything here :)
 
